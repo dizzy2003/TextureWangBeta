@@ -1,0 +1,789 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0c2324a9ab1224ebe3edad393e3544, type: 3}
+  m_Name: Recursion Test Canvas
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 11481416}
+  - {fileID: 11435116}
+  - {fileID: 11467162}
+  - {fileID: 11483462}
+  - {fileID: 11405432}
+  - {fileID: 11402302}
+  - {fileID: 11461538}
+  - {fileID: 11494576}
+  - {fileID: 11445012}
+  - {fileID: 11470988}
+--- !u!114 &11402302
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 36
+    y: -255
+    width: 150
+    height: 50
+  nodeKnobs:
+  - {fileID: 11422928}
+  Inputs: []
+  Outputs: []
+  assigned: 1
+  value: 0
+--- !u!114 &11403538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Left
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 4
+  sidePosition: 20
+  sideOffset: 0
+  connections: []
+  type: Float
+--- !u!114 &11403752
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Bottom
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 1
+  sidePosition: 10
+  sideOffset: 0
+  connections:
+  - {fileID: 11490812}
+  - {fileID: 11452918}
+  type: Float
+--- !u!114 &11405432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -164
+    y: -255
+    width: 150
+    height: 50
+  nodeKnobs:
+  - {fileID: 11429550}
+  Inputs: []
+  Outputs: []
+  assigned: 1
+  value: 10
+--- !u!114 &11406438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Left
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 4
+  sidePosition: 40
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11440506}
+  type: Float
+--- !u!114 &11411000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Top
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 3
+  sidePosition: 10
+  sideOffset: 0
+  connections: []
+  type: Float
+--- !u!114 &11412840
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Right
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 2
+  sidePosition: 40
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 0}
+  type: Float
+--- !u!114 &11413268
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 2
+  m_EditorClassIdentifier: 
+  body: {fileID: 11435116}
+  side: 4
+  sidePosition: 49
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11482992}
+  type: Float
+--- !u!114 &11418570
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 2
+  m_EditorClassIdentifier: 
+  body: {fileID: 11467162}
+  side: 4
+  sidePosition: 49
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11428598}
+  type: Float
+--- !u!114 &11421806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Left
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 4
+  sidePosition: 40
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 0}
+  type: Float
+--- !u!114 &11422928
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11402302}
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11472066}
+  type: Float
+--- !u!114 &11426920
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11467162}
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11446660}
+  - {fileID: 11431132}
+  type: Float
+--- !u!114 &11428598
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11435116}
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11451996}
+  - {fileID: 11418570}
+  type: Float
+--- !u!114 &11429550
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11405432}
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11482992}
+  type: Float
+--- !u!114 &11431132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11483462}
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11426920}
+  type: Float
+--- !u!114 &11435116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a65ad2b155f0d40838ed81292e4df7, type: 3}
+  m_Name: Calc Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -264
+    y: -5
+    width: 200
+    height: 100
+  nodeKnobs:
+  - {fileID: 11482594}
+  - {fileID: 11413268}
+  - {fileID: 11428598}
+  Inputs: []
+  Outputs: []
+  type: 2
+  Input1Val: 5
+  Input2Val: 10
+--- !u!114 &11440506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11461538}
+  side: 2
+  sidePosition: 31
+  sideOffset: 0
+  connections:
+  - {fileID: 11406438}
+  type: Float
+--- !u!114 &11445012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec20c217ebe61744d82a69ad83ff2447, type: 3}
+  m_Name: AllAround Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 186
+    y: -155
+    width: 60
+    height: 60
+  nodeKnobs:
+  - {fileID: 11477356}
+  - {fileID: 11446660}
+  - {fileID: 11412840}
+  - {fileID: 11421806}
+  - {fileID: 11411000}
+  - {fileID: 11403752}
+  - {fileID: 11479998}
+  - {fileID: 11403538}
+  Inputs: []
+  Outputs: []
+--- !u!114 &11446660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Bottom
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 1
+  sidePosition: 30
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11426920}
+  type: Float
+--- !u!114 &11448324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Top
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 3
+  sidePosition: 10
+  sideOffset: 0
+  connections: []
+  type: Float
+--- !u!114 &11451996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11494576}
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11428598}
+  type: Float
+--- !u!114 &11452918
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 11470988}
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11403752}
+  type: Float
+--- !u!114 &11461538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dd50b389073b148b5ec10e419dc073, type: 3}
+  m_Name: Input Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -414
+    y: -155
+    width: 200
+    height: 50
+  nodeKnobs:
+  - {fileID: 11440506}
+  Inputs: []
+  Outputs: []
+  value: 10
+--- !u!114 &11467162
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a65ad2b155f0d40838ed81292e4df7, type: 3}
+  m_Name: Calc Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 36
+    y: 95
+    width: 200
+    height: 100
+  nodeKnobs:
+  - {fileID: 11481134}
+  - {fileID: 11418570}
+  - {fileID: 11426920}
+  Inputs: []
+  Outputs: []
+  type: 3
+  Input1Val: 1
+  Input2Val: 50
+--- !u!114 &11470988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 286
+    y: -55
+    width: 150
+    height: 50
+  nodeKnobs:
+  - {fileID: 11452918}
+  Inputs: []
+  Outputs: []
+  assigned: 1
+  value: 0.02
+--- !u!114 &11472066
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Right
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 2
+  sidePosition: 20
+  sideOffset: 0
+  connections:
+  - {fileID: 11422928}
+  type: Float
+--- !u!114 &11477356
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Top
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 3
+  sidePosition: 30
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 0}
+  type: Float
+--- !u!114 &11479998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Right
+  m_EditorClassIdentifier: 
+  body: {fileID: 11445012}
+  side: 2
+  sidePosition: 20
+  sideOffset: 0
+  connections: []
+  type: Float
+--- !u!114 &11481134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11467162}
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 0}
+  type: Float
+--- !u!114 &11481416
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec20c217ebe61744d82a69ad83ff2447, type: 3}
+  m_Name: AllAround Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -114
+    y: -155
+    width: 60
+    height: 60
+  nodeKnobs:
+  - {fileID: 11482616}
+  - {fileID: 11487420}
+  - {fileID: 11490812}
+  - {fileID: 11406438}
+  - {fileID: 11448324}
+  - {fileID: 11487386}
+  - {fileID: 11472066}
+  - {fileID: 11482992}
+  Inputs: []
+  Outputs: []
+--- !u!114 &11482594
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input 1
+  m_EditorClassIdentifier: 
+  body: {fileID: 11435116}
+  side: 4
+  sidePosition: 31
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 0}
+  type: Float
+--- !u!114 &11482616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Top
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 3
+  sidePosition: 30
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 0}
+  type: Float
+--- !u!114 &11482992
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Left
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 4
+  sidePosition: 20
+  sideOffset: 0
+  connections:
+  - {fileID: 11429550}
+  - {fileID: 11413268}
+  type: Float
+--- !u!114 &11483462
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 335
+    y: 95
+    width: 150
+    height: 50
+  nodeKnobs:
+  - {fileID: 11431132}
+  Inputs: []
+  Outputs: []
+  assigned: 1
+  value: 0.02
+--- !u!114 &11487386
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e7026d0da7df848ab67d517ac12d74, type: 3}
+  m_Name: Output Bottom
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 1
+  sidePosition: 10
+  sideOffset: 0
+  connections: []
+  type: Float
+--- !u!114 &11487420
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Bottom
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 1
+  sidePosition: 30
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 0}
+  type: Float
+--- !u!114 &11490374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ab6487237ff124ea4c2aa5de9ce3fb, type: 3}
+  m_Name: MainEditorState
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 11400000}
+  parentEditor: {fileID: 0}
+  drawing: 1
+  selectedNode: {fileID: 0}
+  panOffset: {x: 36, y: -5}
+  zoom: 1
+--- !u!114 &11490812
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caff27366054dd44a30ddb5be369acc, type: 3}
+  m_Name: Input Right
+  m_EditorClassIdentifier: 
+  body: {fileID: 11481416}
+  side: 2
+  sidePosition: 40
+  sideOffset: 0
+  Optional: 0
+  connection: {fileID: 11403752}
+  type: Float
+--- !u!114 &11494576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 36
+    y: -5
+    width: 150
+    height: 50
+  nodeKnobs:
+  - {fileID: 11451996}
+  Inputs: []
+  Outputs: []
+  assigned: 1
+  value: 50

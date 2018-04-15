@@ -1,0 +1,169 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0c2324a9ab1224ebe3edad393e3544, type: 3}
+  m_Name: State Canvas
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &11406052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ab6487237ff124ea4c2aa5de9ce3fb, type: 3}
+  m_Name: MainEditorState
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 11400000}
+  parentEditor: {fileID: 0}
+  drawing: 1
+  selectedNode: {fileID: 0}
+  panOffset: {x: -1, y: 0}
+  zoom: 1
+--- !u!114 &11420366
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd18c40fc0cb4f343855d6409db3031e, type: 3}
+  m_Name: 2
+  m_EditorClassIdentifier: 
+  rect:
+    x: 24
+    y: -127
+    width: 200
+    height: 80
+  nodeKnobs: []
+  Inputs: []
+  Outputs: []
+  transitions:
+  - {fileID: 11442262}
+  OnStateEnter:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: 53746174654e6f64652b53746174654368616e67652c20417373656d626c792d4353686172702d6669727374706173732c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+  OnStateLeave:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: 53746174654e6f64652b53746174654368616e67652c20417373656d626c792d4353686172702d6669727374706173732c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+  stateName: 32
+--- !u!114 &11442262
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9514494d336f3648b463b2e74635e37, type: 3}
+  m_Name: Transition 2-3
+  m_EditorClassIdentifier: 
+  _startNode: {fileID: 11420366}
+  _endNode: {fileID: 11487410}
+  conditions: []
+  transitionTime: 2
+--- !u!114 &11482766
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9514494d336f3648b463b2e74635e37, type: 3}
+  m_Name: Transition 3-1
+  m_EditorClassIdentifier: 
+  _startNode: {fileID: 11487410}
+  _endNode: {fileID: 11484536}
+  conditions: []
+  transitionTime: 2
+--- !u!114 &11484536
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd18c40fc0cb4f343855d6409db3031e, type: 3}
+  m_Name: 1
+  m_EditorClassIdentifier: 
+  rect:
+    x: -230
+    y: -243
+    width: 200
+    height: 80
+  nodeKnobs: []
+  Inputs: []
+  Outputs: []
+  transitions:
+  - {fileID: 11494348}
+  OnStateEnter:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: 53746174654e6f64652b53746174654368616e67652c20417373656d626c792d4353686172702d6669727374706173732c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+  OnStateLeave:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: 53746174654e6f64652b53746174654368616e67652c20417373656d626c792d4353686172702d6669727374706173732c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+  stateName: 31
+--- !u!114 &11487410
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd18c40fc0cb4f343855d6409db3031e, type: 3}
+  m_Name: 3
+  m_EditorClassIdentifier: 
+  rect:
+    x: -228
+    y: 40
+    width: 200
+    height: 80
+  nodeKnobs: []
+  Inputs: []
+  Outputs: []
+  transitions:
+  - {fileID: 11482766}
+  OnStateEnter:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: 53746174654e6f64652b53746174654368616e67652c20417373656d626c792d4353686172702d6669727374706173732c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+  OnStateLeave:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: 53746174654e6f64652b53746174654368616e67652c20417373656d626c792d4353686172702d6669727374706173732c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+  stateName: 33
+--- !u!114 &11494348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9514494d336f3648b463b2e74635e37, type: 3}
+  m_Name: Transition 1-2
+  m_EditorClassIdentifier: 
+  _startNode: {fileID: 11484536}
+  _endNode: {fileID: 11420366}
+  conditions: []
+  transitionTime: 2
