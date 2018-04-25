@@ -42,22 +42,33 @@ namespace Assets.TextureWang.Scripts.Nodes
         {
         }
 
+        private string ms_PathName;
         public override void DrawNodePropertyEditor() 
         {
-//miked        m_TitleBoxColor = Color.green;
+            if (GUILayout.Button("save png"))
+            {
+
+                ms_PathName = EditorUtility.SaveFilePanel("SavePNG", "Assets/", ms_PathName, "png");
+
+                
+                SavePNG(m_Output, ms_PathName);
+            }
+            //miked        m_TitleBoxColor = Color.green;
 #if UNITY_EDITOR
-            m_Output =(Texture2D) EditorGUI.ObjectField(new Rect(0, 300, 300, 300), m_Output, typeof(Texture2D),false);
+            
             m_TexName = (string)GUILayout.TextField(m_TexName);
+            m_Output = (Texture2D)EditorGUILayout.ObjectField( m_Output, typeof(Texture2D), false, GUILayout.MinHeight(200), GUILayout.MinHeight(200));
+            //GUILayout.EndArea();
 #endif
 
-/*
-        GUILayout.BeginArea(new Rect(0, 40, 150, 256));
-        if (m_Cached != null)
-        {
-            GUILayout.Label(m_Cached);
-        }
-        GUILayout.EndArea();
-*/
+            /*
+                    GUILayout.BeginArea(new Rect(0, 40, 150, 256));
+                    if (m_Cached != null)
+                    {
+                        GUILayout.Label(m_Cached);
+                    }
+                    GUILayout.EndArea();
+            */
 
         }
         protected internal override void NodeGUI()
@@ -85,29 +96,19 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public override bool Calculate()
         {
-            if (!allInputsReady())
-                return false;
+
 
             if (m_Output == null)
                 return false;
             TextureParam input = null;
-            if (Inputs[0].connection != null)
-                input = Inputs[0].connection.GetValue<TextureParam>();
-            if (input == null)
-                return false;
             TextureParam input2 = null;
-            int index2 = 1;
-            if (Inputs.Count < 2)
-                index2 = 0;
 
-            if (Inputs[index2].connection != null)
-                input2 = Inputs[index2].connection.GetValue<TextureParam>();
-            if (input2 == null)
+            if (!GetInput(0, out input))
                 return false;
-            //input.DestinationToTexture(m_Output);
+            if (!GetInput(1, out input2))
+                return false;
 
 
-        
             if (m_Output.width != input.m_Width)
             {
                 Texture2D texture = new Texture2D(input.m_Width, input.m_Height, TextureFormat.ARGB32, false);
@@ -126,24 +127,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             {
                 System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
                 timer.Start();
-                /*
-                        float minred=float.MaxValue, maxred=float.MinValue;
-                        float minalpha = float.MaxValue, maxalpha = float.MinValue;
-                        for (int x = 0; x < input.m_Width; x++)
-                        {
-                            for (int y = 0; y < input.m_Height; y++)
-                            {
-                                Color col = input.GetCol(x, y);
-                                col.a = col.r;
-                                minred = Mathf.Min(minred, col.r);
-                                maxred = Mathf.Max(maxred, col.r);
-                                minalpha = Mathf.Min(minalpha, col.a);
-                                maxalpha = Mathf.Max(maxalpha, col.a);
-                                m_Output.SetPixel((int)(((float)x / (float)input.m_Width) * m_Output.width), (int)(((float)y / (float)input.m_Height) * m_Output.height), col);
-                                //m_Param.Set(x, y, col.r, col.g, col.b, 1.0f);
-                            }
-                        }
-            */
+
                 RenderTexture rt=new RenderTexture(m_Output.width,m_Output.height,0,RenderTextureFormat.ARGB32);
 
                 Material m = GetMaterial("TextureOps");

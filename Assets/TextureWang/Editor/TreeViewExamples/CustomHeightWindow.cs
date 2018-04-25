@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace UnityEditor.TreeViewExamples
 {
-#if UNUSED
+
     class CustomHeightWindow : EditorWindow
 	{
 		[NonSerialized] bool m_Initialized;
@@ -141,5 +141,5 @@ namespace UnityEditor.TreeViewExamples
 			GUILayout.EndArea();
 		}
 	}
-#endif
+
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.TextureWang.Scripts.Nodes
 {
-    [Node (false, "OneInput/Posterize")]
+    [Node (false, "Filter/Posterize")]
     public class Texture1Posterize : TextureMathOp
     {
         public const string ID = "Texture1Posterize";

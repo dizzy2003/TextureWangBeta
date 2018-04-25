@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.TextureWang.Scripts.Nodes
 {
-    [Node (false, "OneInput/AmbientOcclusion")]
+    [Node (false, "Filter/AmbientOcclusion")]
     public class Texture1AO : TextureMathOp
     {
         private const string m_Help = "depth based AmbientOcclusion";

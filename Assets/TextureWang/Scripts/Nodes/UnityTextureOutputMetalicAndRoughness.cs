@@ -42,8 +42,9 @@ namespace Assets.TextureWang.Scripts.Nodes
         public override void DrawNodePropertyEditor()
         {
 #if UNITY_EDITOR
-            m_Output = (Texture2D)EditorGUI.ObjectField(new Rect(0, 300, 300, 300), m_Output, typeof(Texture2D), false);
+            
             m_TexName = (string)GUILayout.TextField(m_TexName);
+            m_Output = (Texture2D)EditorGUILayout.ObjectField(m_Output, typeof(Texture2D), false, GUILayout.MinHeight(200), GUILayout.MinHeight(200));
 #endif
 
             /*
@@ -59,24 +60,19 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public override bool Calculate()
         {
-            if (!allInputsReady())
-                return false;
 
             if (m_Output == null)
                 return false;
             TextureParam input = null;
-            if (Inputs[0].connection != null)
-                input = Inputs[0].connection.GetValue<TextureParam>();
-
             TextureParam input2 = null;
-            if (Inputs[1].connection != null)
-                input2 = Inputs[1].connection.GetValue<TextureParam>();
 
+            if (!GetInput(0, out input))
+                return false;
+            if (!GetInput(1, out input2))
+                return false;
 
             //input.DestinationToTexture(m_Output);
 
-
-        
             if (m_Output.width != input.m_Width)
             {
                 Texture2D texture = new Texture2D(input.m_Width, input.m_Height, TextureFormat.ARGB32, false);

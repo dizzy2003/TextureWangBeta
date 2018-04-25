@@ -239,7 +239,7 @@ namespace Assets.TextureWang.Scripts.Nodes
                         else
                             pathrename = m_PathName.Replace(".png", "" + x + ".png");
                     
-                        m_Param.SavePNG(pathrename);
+                        m_Param.SavePNG(pathrename,m_Param.m_Width,m_Param.m_Height);
                     }
                     else
                     {
@@ -333,44 +333,7 @@ namespace Assets.TextureWang.Scripts.Nodes
 
             m_Loops = 0;
         }
-#if OLD
-    public override bool Calculate()
-    {
-        if (!allInputsReady())
-            return false;
 
-        TextureParam input = null;
-        if (Inputs[0].connection != null)
-            input = Inputs[0].connection.GetValue<TextureParam>();
-        if (input == null)
-            return false;
-        TextureParam input2 = null;
-        int index2 = 1;
-        if (Inputs.Count < 2)
-            index2 = 0;
-
-        if (Inputs[index2].connection != null)
-            input2 = Inputs[index2].connection.GetValue<TextureParam>();
-        if (input2 == null)
-            return false;
-
-        if (m_Param == null)
-            m_Param = new TextureParam(m_TexWidth, m_TexHeight);
-        m_TexMode=TexMode.ColorRGB;
-
-        Material m = GetMaterial("TextureOps");
-        m.SetInt("_MainIsGrey", input.IsGrey() ? 1 : 0);
-        m.SetInt("_TextureBIsGrey", input2.IsGrey() ? 1 : 0);
-        m.SetTexture("_GradientTex", input2.GetHWSourceTexture());
-        Graphics.Blit(input.GetHWSourceTexture(), CreateRenderDestination(input, m_Param), m, (int)ShaderOp.CopyColorAndAlpha);
-
-        CreateCachedTextureIcon();
-        
-
-
-        return true;
-    }
-#endif
 
         IEnumerable<int> CalculateIE(int startIndex)
         {
@@ -453,19 +416,12 @@ namespace Assets.TextureWang.Scripts.Nodes
         {
 //Get RGB
             TextureParam input = null;
-            if (Inputs[0].connection != null)
-                input = Inputs[0].connection.GetValue<TextureParam>();
-            if (input == null)
-                return false;
             //Get Alpha
             TextureParam input2 = null;
-            int index2 = 1;
-            if (Inputs.Count < 2)
-                index2 = 0;
 
-            if (Inputs[index2].connection != null)
-                input2 = Inputs[index2].connection.GetValue<TextureParam>();
-            if (input2 == null)
+            if (!GetInput(0, out input))
+                return false;
+            if (!GetInput(1, out input2))
                 return false;
 
             if (m_Param == null)

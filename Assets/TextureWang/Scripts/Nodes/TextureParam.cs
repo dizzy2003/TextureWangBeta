@@ -79,6 +79,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         SplatterGridProb=54,
         SmoothedMask=55,
         SmoothedDirection=56,
+        CopyRGBAChannels = 57,
 
 
         SetCol = 0,
@@ -104,17 +105,35 @@ namespace Assets.TextureWang.Scripts.Nodes
     {
         public string Identifier { get { return "TextureParam"; } }
         public Type Type { get { return typeof(TextureParam); } }
-        public Color Color { get { return Color.red; } }
+        public Color Color { get { return Color.white; } }
         public string InKnobTex { get { return "Textures/In_Knob.png"; } }
         public string OutKnobTex { get { return "Textures/Out_Knob.png"; } }
     }
+
 
     public class TextureParam
     {
         public static TextureFormat ms_TexFormat = TextureFormat.RGBAFloat;
         public static RenderTextureFormat ms_RTexFormat = RenderTextureFormat.ARGBFloat;
 
+        static TextureParam ms_White;
 
+        static public TextureParam GetWhite()
+        {
+            if (ms_White == null)
+            {
+                ms_White=new TextureParam(1,1);
+                ms_White.m_Tex=new Texture2D(1,1,TextureFormat.ARGB32, false);
+                ms_White.m_Tex.SetPixel(0,0,Color.white);
+                ms_White.m_Tex.Apply();
+                ms_White.m_Channels = 4;
+                
+
+            }
+            return ms_White;
+
+        }
+    
 
         public static RenderTextureFormat GetRTFormat(bool _grey, ChannelType _pixeltype)
         {
@@ -286,16 +305,44 @@ namespace Assets.TextureWang.Scripts.Nodes
             }
 
         }
-        public void SavePNG(string path)
+        public void SavePNG(string path,int _width,int _height)
         {
-            var tex = new Texture2D(m_Destination.width, m_Destination.height, TextureParam.ms_TexFormat, false);
-            RenderTexture.active = m_Destination;
-            tex.ReadPixels(new Rect(0, 0, m_Width, m_Height), 0, 0);
-            tex.Apply();
-            RenderTexture.active = null;
+            var tex = new Texture2D(_width, _height, TextureParam.ms_TexFormat, false);
 
+            if (IsGrey())
+            {
+                //for grey scale we have to create a new texture with alpha channel ==1
+
+                RenderTexture rt = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
+
+                Material m = TextureNode.GetMaterial("TextureOps");
+                m.SetInt("_MainIsGrey", IsGrey() ? 1 : 0);
+                m.SetInt("_TextureBIsGrey", 1);
+                m.SetTexture("_GradientTex", GetWhite().m_Destination);
+
+                Graphics.Blit(GetHWSourceTexture(), rt, m, (int) ShaderOp.CopyColorAndAlpha);
+
+                RenderTexture.active = rt;
+                tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+                //input.DestinationToTexture(m_Output);
+                tex.Apply();
+                RenderTexture.active = null;
+                rt.DiscardContents();
+                rt.Release();
+                rt = null;
+
+            }
+            else
+            {
+
+                RenderTexture.active = m_Destination;
+                tex.ReadPixels(new Rect(0, 0, m_Width, m_Height), 0, 0);
+                tex.Apply();
+                RenderTexture.active = null;
+
+            }
             byte[] bytes = tex.EncodeToPNG();
-            
+
             if (!string.IsNullOrEmpty(path))
             {
                 File.WriteAllBytes(path, bytes);

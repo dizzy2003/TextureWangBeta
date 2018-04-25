@@ -21,7 +21,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             CreateOpRipples node = CreateInstance<CreateOpRipples>();
         
             node.rect = new Rect(pos.x, pos.y, m_NodeWidth, m_NodeHeight);
-            node.name = "CreateOpRipples";
+            node.name = "Ripples";
             node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
 
             node.m_Value1 = new FloatRemap(8.0f,0,20);

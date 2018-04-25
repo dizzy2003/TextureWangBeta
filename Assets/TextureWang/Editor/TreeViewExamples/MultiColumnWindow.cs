@@ -21,8 +21,8 @@ namespace UnityEditor.TreeViewExamples
 		MyTreeAsset m_MyTreeAsset;
 
 	    private ITreeDataProvider m_DataProvider;
-
-        [MenuItem("TreeView Examples/Multi Columns")]
+        
+        [MenuItem("Texture Wang/NodeTreeWindow")]
 		public static MultiColumnWindow GetWindow (ITreeDataProvider _data)
 		{
 			var window = GetWindow<MultiColumnWindow>();
@@ -30,7 +30,9 @@ namespace UnityEditor.TreeViewExamples
             window.titleContent = new GUIContent("Nodes");
 			window.Focus();
 			window.Repaint();
-			return window;
+            window.m_PrevWidth = window.position.width;
+            MyTreeElement.ms_LookupTextures=null;
+            return window;
 		}
 
 	    public void ReInit()
@@ -102,7 +104,7 @@ namespace UnityEditor.TreeViewExamples
 
 				var treeModel = new TreeModel<MyTreeElement>(data);
 				
-				m_TreeView = new MultiColumnTreeView(m_TreeViewState, multiColumnHeader, treeModel);
+				m_TreeView = new MultiColumnTreeView(m_TreeViewState, multiColumnHeader, treeModel,this);
 
 				m_SearchField = new SearchField();
 				m_SearchField.downOrUpArrowKeyPressed += m_TreeView.SetFocusAndEnsureSelectedItem;
@@ -135,9 +137,18 @@ namespace UnityEditor.TreeViewExamples
 			}
 		}
 
+	    void OnResized()
+	    {
+            m_TreeView.Reload();
+        }
+
+	    public float m_PrevWidth;
 		void OnGUI ()
 		{
-		    if (GetData() == null)
+            if(m_PrevWidth!=position.width)
+                m_TreeView.Reload();
+		    m_PrevWidth = position.width;
+            if (GetData() == null)
 		        return;
 			InitIfNeeded();
 

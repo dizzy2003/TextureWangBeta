@@ -115,9 +115,26 @@ namespace NodeEditorFramework
 			if (drawMethod == ConnectionDrawMethod.Bezier) 
 			{
 				float dirFactor = 80;//Mathf.Pow ((startPos-endPos).magnitude, 0.3f) * 20;
-				//Debug.Log ("DirFactor is " + dirFactor + "with a bezier lenght of " + (startPos-endPos).magnitude);
-				RTEditorGUI.DrawBezier (startPos, endPos, startPos + startDir * dirFactor, endPos + endDir * dirFactor, col * Color.gray, null, 3);
-			}
+                                     //Debug.Log ("DirFactor is " + dirFactor + "with a bezier lenght of " + (startPos-endPos).magnitude);
+                
+			    Color coluse = col;
+			    coluse.r += Node.m_Saturation;
+                coluse.g += Node.m_Saturation;
+                coluse.b += Node.m_Saturation;
+			    coluse.r = Mathf.Clamp01(coluse.r);
+                coluse.g = Mathf.Clamp01(coluse.g);
+                coluse.b = Mathf.Clamp01(coluse.b);
+                coluse.r*= Node.m_WireColbright;
+                coluse.g *= Node.m_WireColbright;
+                coluse.b *= Node.m_WireColbright;
+
+                RTEditorGUI.DrawBezier (startPos, endPos, startPos + startDir * dirFactor, endPos + endDir * dirFactor, coluse , null, Node.m_WireSize);
+			    Vector2 sp = startPos + Vector2.one*Node.m_DropShadowOffset;
+                Vector2 ep = endPos + Vector2.one * Node.m_DropShadowOffset;
+			    col = Color.black;
+			    col.a = Node.m_DropShadowMult2;
+                RTEditorGUI.DrawBezier(sp, ep, sp + startDir * dirFactor, ep + endDir * dirFactor, col * Color.black, null, Node.m_WireSize2);
+            }
 			else if (drawMethod == ConnectionDrawMethod.StraightLine)
 				RTEditorGUI.DrawLine (startPos, endPos, col * Color.gray, null, 3);
 		}

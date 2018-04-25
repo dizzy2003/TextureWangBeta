@@ -46,6 +46,55 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public bool m_RequestRepaint;
 
+        public static Dictionary<string, Texture> ms_LookupTextures;
+        static public void CheckDiskIcon(string _name, TextureParam _out)
+        {
+            return;
+            if (ms_LookupTextures == null)
+            {
+                ms_LookupTextures = new Dictionary<string, Texture>();
+            }
+            Texture ret;
+            //if (!ms_LookupTextures.TryGetValue(_name, out ret))
+            {
+                string assetName = "Assets/TextureWang/Icons/" + _name + ".png";
+                TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(assetName);
+                if (importer == null)
+                {
+                    _out.SavePNG(assetName,256,256); //just for icons
+                    AssetDatabase.Refresh();
+                    importer = (TextureImporter)TextureImporter.GetAtPath(assetName);
+                    if (importer)
+                    {
+                        importer.compressionQuality = importer.compressionQuality + 1; //try and force the import
+                        importer.SaveAndReimport();
+                        ms_LookupTextures[_name] = _out.m_Destination;
+                    }
+
+                }
+            }
+
+        }
+
+        public bool GetInput(int _input,out TextureParam _out)
+        {
+            _out = null;
+
+            if (Inputs==null || _input >= Inputs.Count)
+            {
+                Debug.LogError("not enough inputs for "+this);
+                return false;
+            }
+
+
+            if (Inputs[_input].connection != null)
+                _out = Inputs[_input].connection.GetValue<TextureParam>();
+            else
+                _out = TextureParam.GetWhite();
+
+            return true;
+        }
+
         public void AddRefreshWindow(EditorWindow _w)
         {
             if (m_Refresh == null)
@@ -228,6 +277,8 @@ namespace Assets.TextureWang.Scripts.Nodes
         {
         
         }
+
+        
         protected internal override void NodeGUI()
         {
 /*
@@ -276,7 +327,7 @@ namespace Assets.TextureWang.Scripts.Nodes
 
                 ms_PathName = EditorUtility.SaveFilePanel("SavePNG", "Assets/", ms_PathName, "png");
 
-                m_Param.SavePNG(ms_PathName);
+                m_Param.SavePNG(ms_PathName,m_Param.m_Width,m_Param.m_Height);
             }
             m_TexMode = (TexMode)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Colors", "3 components per texture or one"), m_TexMode, GUILayout.MaxWidth(300));
             m_PixelDepth = (ChannelType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Pixel Depth", "Bytes Per pixel/accuracy"), m_PixelDepth, GUILayout.MaxWidth(300));
@@ -422,6 +473,9 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public void CreateCachedTextureIcon()
         {
+            if(Inputs==null ||Inputs.Count==0 && !(this is SubTreeNode))
+                CheckDiskIcon(name, m_Param);
+
             m_Cached = CreateTextureIcon(1024);
             if (m_Refresh != null)
             {

@@ -73,19 +73,13 @@ namespace Assets.TextureWang.Scripts.Nodes
  
         public override bool Calculate()
         {
-            if (!allInputsReady())
-            {
-                // Debug.LogError(" input no ready");
-                return false;
-            }
+
             TextureParam input = null;
-            if (Inputs == null || Inputs.Count == 0)
-            {
-                Debug.LogError(" null inputs in " + this);
+
+            if (!GetInput(0, out input))
                 return false;
-            }
-            if (Inputs[0].connection != null)
-                input = Inputs[0].connection.GetValue<TextureParam>();
+
+
             if (m_Param == null)
                 m_Param = new TextureParam(m_TexWidth,m_TexHeight);
             if (input == null)

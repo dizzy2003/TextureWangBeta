@@ -392,10 +392,13 @@ namespace Assets.TextureWang.Scripts.Nodes
 
                 CreateCachedTextureIcon();
                 //m_Cached = m_Param.GetHWSourceTexture();
-            
+
+                CheckDiskIcon(m_SubCanvas.name,m_Param);
             }
 
             return true;
         }
+
     }
+    
 }

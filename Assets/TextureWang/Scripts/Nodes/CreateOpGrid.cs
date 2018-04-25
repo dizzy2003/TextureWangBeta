@@ -21,7 +21,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             CreateOpGrid node = CreateInstance<CreateOpGrid>();
         
             node.rect = new Rect(pos.x, pos.y, m_NodeWidth, m_NodeHeight);
-            node.name = "CreateOpGrid";
+            node.name = "Bricks";
             node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
 
             node.m_Value1 = new FloatRemap(10.0f,0,100);

@@ -16,7 +16,12 @@ namespace UnityEditor.TreeViewExamples
 		{
 			this.data = data;
 		}
-	}
+
+	    public Texture2D GetIcon1()
+	    {
+	        return data.GetIcon1();
+	    }
+    }
 
 	public class TreeViewWithTreeModel<T> : TreeView where T : TreeElement
 	{

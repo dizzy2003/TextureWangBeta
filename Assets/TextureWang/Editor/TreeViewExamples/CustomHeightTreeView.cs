@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UnityEditor.TreeViewExamples
 {
-#if UNUSED
+
     internal class CustomHeightTreeView : TreeViewWithTreeModel<MyTreeElement>
 	{
 		static class Styles
@@ -36,7 +36,7 @@ namespace UnityEditor.TreeViewExamples
 		public override void OnGUI (Rect rect)
 		{
 			// Background
-			if (Event.current.type == EventType.repaint)
+			if (Event.current.type == EventType.Repaint)
 				DefaultStyles.backgroundOdd.Draw(rect, false, false, false, false);
 
 			// TreeView
@@ -73,7 +73,7 @@ namespace UnityEditor.TreeViewExamples
 
 		void DrawItemBackground (Rect bgRect)
 		{
-			if (Event.current.type == EventType.repaint)
+			if (Event.current.type == EventType.Repaint)
 			{
 				var rect = bgRect;
 				rect.height = Styles.headerBackground.fixedHeight;
@@ -107,7 +107,7 @@ namespace UnityEditor.TreeViewExamples
 			var rect = controlsRect;
 			rect.y += 3f;
 			rect.height = EditorGUIUtility.singleLineHeight;
-			item.data.floatValue1 = EditorGUI.Slider(rect, GUIContent.none, item.data.floatValue1, 0f, 1f);
+//			item.data.floatValue1 = EditorGUI.Slider(rect, GUIContent.none, item.data.floatValue1, 0f, 1f);
 			rect.y += rect.height + EditorGUIUtility.standardVerticalSpacing;
 			item.data.material = (Material)EditorGUI.ObjectField(rect, GUIContent.none, item.data.material, typeof(Material), false);
 			rect.y += rect.height + EditorGUIUtility.standardVerticalSpacing;
@@ -144,5 +144,5 @@ namespace UnityEditor.TreeViewExamples
 			}
 		}
 	}
-#endif
+
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor.IMGUI.Controls;
 
-
+#if UNUSED
 namespace UnityEditor.TreeViewExamples
 {
 	class SimpleTreeViewWindow : EditorWindow
@@ -60,3 +60,4 @@ namespace UnityEditor.TreeViewExamples
 		}
 	}
 }
+#endif

@@ -29,7 +29,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             CreateOpPerlin node = CreateInstance<CreateOpPerlin> ();
         
             node.rect = new Rect(pos.x, pos.y, m_NodeWidth, m_NodeHeight);
-            node.name = "CreateOpPerlin";
+            node.name = "Perlin";
             node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
             node.m_Value1 = new FloatRemap(20.0f,0,100);
             node.m_Value2 = new FloatRemap(20.0f,0,100);
@@ -154,6 +154,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             //m_Cached = m_Param.GetHWSourceTexture();
             CreateCachedTextureIcon();
             Outputs[0].SetValue<TextureParam> (m_Param);
+            CheckDiskIcon(name, m_Param);
             return true;
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.TextureWang.Scripts.Nodes
 {
-    [Node (false, "OneInput/SharpenFilter")]
+    [Node (false, "Filter/SharpenFilter")]
     public class Texture1Sharpen : TextureMathOp
     {
         public const string ID = "Texture1Sharpen";

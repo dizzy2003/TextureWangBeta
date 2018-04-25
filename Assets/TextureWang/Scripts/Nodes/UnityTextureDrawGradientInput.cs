@@ -138,25 +138,27 @@ namespace Assets.TextureWang.Scripts.Nodes
             }
 
 
-            m_Input = (Texture2D)EditorGUI.ObjectField(new Rect(0, 730, 250, 250), m_Input, typeof(Texture2D), false);
-/*
-        foreach (var p in m_GradientPos)
-        {
-            float px = (p.x / m_Input.width) * 250.0f;
-            float py = 250.0f - (p.y / m_Input.height) * 250.0f + 90.0f;
-            GUI.DrawTexture(new Rect(px, py, 2, 2), m_Input);
-        }
-*/
+            //m_Input = (Texture2D)EditorGUI.ObjectField(new Rect(0, 730, 250, 250), m_Input, typeof(Texture2D), false);
+            m_Input = (Texture2D)EditorGUILayout.ObjectField(m_Input, typeof(Texture2D), false, GUILayout.MinHeight(200), GUILayout.MinHeight(200));
+            /*
+                    foreach (var p in m_GradientPos)
+                    {
+                        float px = (p.x / m_Input.width) * 250.0f;
+                        float py = 250.0f - (p.y / m_Input.height) * 250.0f + 90.0f;
+                        GUI.DrawTexture(new Rect(px, py, 2, 2), m_Input);
+                    }
+            */
 
-        
+
             if (m_Cached != null )
             {
             
-                GUI.DrawTexture(new Rect(0, 650, 250, 50), m_Cached, ScaleMode.StretchToFill);
-            
+                //GUI.DrawTexture(new Rect(0, 650, 250, 50), m_Cached, ScaleMode.StretchToFill);
+                EditorGUILayout.ObjectField(m_Cached, typeof(Texture), false, GUILayout.MinHeight(200), GUILayout.MinHeight(100));
+
 
             }
-        
+
 
 
         }

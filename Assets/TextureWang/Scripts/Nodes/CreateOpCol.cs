@@ -26,7 +26,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             CreateOpCol node = CreateInstance<CreateOpCol>();
         
             node.rect = new Rect(pos.x, pos.y, m_NodeWidth, m_NodeHeight);
-            node.name = "CreateOpCol";
+            node.name = "Colour";
             node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
 
             node.m_Value1 = new FloatRemap(0.5f,0,1);

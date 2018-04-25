@@ -74,8 +74,8 @@ namespace Assets.TextureWang.Scripts.Nodes
                 return false;
             }
             TextureParam input = null;
-            if (Inputs[0].connection != null)
-                input = Inputs[0].connection.GetValue<TextureParam>();
+            if (!GetInput(0, out input))
+                return false;
             if (m_Param == null)
                 m_Param = new TextureParam(m_TexWidth,m_TexHeight);
             if (input == null)

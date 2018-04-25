@@ -13,8 +13,8 @@ namespace UnityEditor.TreeViewExamples
 		const float kRowHeights = 20f;
 		const float kToggleWidth = 18f;
 		public bool showControls = true;
-
-		static Texture2D[] s_TestIcons =
+	    private EditorWindow m_Window;
+        static Texture2D[] s_TestIcons =
 		{
 			EditorGUIUtility.FindTexture ("Folder Icon"),
 			EditorGUIUtility.FindTexture ("AudioSource Icon"),
@@ -74,7 +74,7 @@ namespace UnityEditor.TreeViewExamples
 			}
 		}
 
-		public MultiColumnTreeView (TreeViewState state, MultiColumnHeader multicolumnHeader, TreeModel<MyTreeElement> model) : base (state, multicolumnHeader, model)
+		public MultiColumnTreeView (TreeViewState state, MultiColumnHeader multicolumnHeader, TreeModel<MyTreeElement> model, EditorWindow _window) : base (state, multicolumnHeader, model)
 		{
 		//	Assert.AreEqual(m_SortOptions.Length , Enum.GetValues(typeof(MyColumns)).Length, "Ensure number of sort options are in sync with number of MyColumns enum values");
 
@@ -86,8 +86,8 @@ namespace UnityEditor.TreeViewExamples
 			customFoldoutYOffset = (kRowHeights - EditorGUIUtility.singleLineHeight) * 0.5f; // center foldout in the row since we also center content. See RowGUI
 			extraSpaceBeforeIconAndLabel = kToggleWidth;
 			multicolumnHeader.sortingChanged += OnSortingChanged;
-			
-			Reload();
+		    m_Window = _window;
+            Reload();
 		}
 
 
@@ -214,42 +214,85 @@ namespace UnityEditor.TreeViewExamples
 		    }
 
 		    for (int i = 0; i < args.GetNumVisibleColumns (); ++i)
-			{
-				CellGUI(args.GetCellRect(i), item, (MyColumns)args.GetColumn(i), ref args);
+		    {
+		        var r = args.GetCellRect(i);
+                var myItem = (TreeViewItem<MyTreeElement>)item;
+                if (i == 1)
+		        {
+                    
+
+                    r.height = GetCustomRowHeight(i, item)-5;
+		            r.width = r.height-5;
+		            if (myItem.GetIcon1() != null)
+		                r.x -= 20;
+		        }
+                if(i==2 && myItem.GetIcon1() != null)
+                    r.x -= 60;
+                CellGUI(r, item, (MyColumns)args.GetColumn(i), ref args);
 			}
 		}
+        protected override float GetCustomRowHeight(int row, TreeViewItem item)
+        {
+            var myItem = (TreeViewItem<MyTreeElement>)item;
 
-		void CellGUI (Rect cellRect, TreeViewItem<MyTreeElement> item, MyColumns column, ref RowGUIArgs args)
+            if (myItem.GetIcon1() != null)
+            {
+                float size = (m_Window.position.width - 150);
+                if (size<0)
+                    size = 0;
+                return 20 + size;
+            }
+
+            return 30f;
+        }
+        void CellGUI (Rect cellRect, TreeViewItem<MyTreeElement> item, MyColumns column, ref RowGUIArgs args)
 		{
 
 
             // Center cell rect vertically (makes it easier to place controls, icons etc in the cells)
-            CenterRectUsingSingleLineHeight(ref cellRect);
+
 
 			switch (column)
 			{
 				case MyColumns.Icon1:
 					{
-						GUI.DrawTexture(cellRect, s_TestIcons[GetIcon1Index(item)], ScaleMode.ScaleToFit);
-					}
+						//GUI.DrawTexture(cellRect, s_TestIcons[GetIcon1Index(item)], ScaleMode.ScaleToFit);
+                        //GUI.DrawTexture(cellRect, item.GetIcon1(), ScaleMode.ScaleToFit);
+                    }
 					break;
 				case MyColumns.Icon2:
 					{
-						GUI.DrawTexture(cellRect, s_TestIcons[GetIcon2Index(item)], ScaleMode.ScaleToFit);
-					}
+						if(item.hasChildren)
+                            GUI.DrawTexture(cellRect, s_TestIcons[GetIcon2Index(item)], ScaleMode.ScaleToFit);
+						else
+						{
+						    var t = item.GetIcon1();
+						    if (t != null)
+						    {
+						        Color was = GUI.color;
+						        GUI.color = Color.white;
+						        GUI.DrawTexture(cellRect, t, ScaleMode.ScaleToFit);
+						        GUI.color = was;
+
+						    }
+						}
+                    }
 					break;
 
 				case MyColumns.Name:
 					{
-						// Do toggle
-/*
-						Rect toggleRect = cellRect;
-						toggleRect.x += GetContentIndent(item);
-						toggleRect.width = kToggleWidth;
-						if (toggleRect.xMax < cellRect.xMax)
-							item.data.enabled = EditorGUI.Toggle(toggleRect, item.data.enabled); // hide when outside cell rect
-*/
-						// Default icon and label
+                        CenterRectUsingSingleLineHeight(ref cellRect);
+                        // Do toggle
+                        /*
+                                                Rect toggleRect = cellRect;
+                                                toggleRect.x += GetContentIndent(item);
+                                                toggleRect.width = kToggleWidth;
+                                                if (toggleRect.xMax < cellRect.xMax)
+                                                    item.data.enabled = EditorGUI.Toggle(toggleRect, item.data.enabled); // hide when outside cell rect
+                        */
+                        // Default icon and label
+                        var itemUse = (TreeViewItem<MyTreeElement>)args.item;
+
 						args.rowRect = cellRect;
 						base.RowGUI(args);
 					}
@@ -363,7 +406,7 @@ namespace UnityEditor.TreeViewExamples
 					sortedAscending = true,
 					sortingArrowAlignment = TextAlignment.Center,
 					width = 150, 
-					minWidth = 60,
+					minWidth = 160,
 					autoResize = false,
 					allowToggleVisibility = false
 				}/*,

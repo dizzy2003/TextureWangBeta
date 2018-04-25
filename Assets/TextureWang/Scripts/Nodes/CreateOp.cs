@@ -148,6 +148,8 @@ namespace Assets.TextureWang.Scripts.Nodes
             //m_Cached = m_Param.GetHWSourceTexture();
             if(Outputs.Count>0)
                 Outputs[0].SetValue<TextureParam>(m_Param);
+
+            CheckDiskIcon(name, m_Param);
             return true;
         }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.TextureWang.Scripts.Nodes
 {
-    [Node (false, "OneInput/EmbossFilter")]
+    [Node (false, "Filter/EmbossFilter")]
     public class Texture1Emboss : TextureMathOp
     {
         public const string ID = "Texture1Emboss";

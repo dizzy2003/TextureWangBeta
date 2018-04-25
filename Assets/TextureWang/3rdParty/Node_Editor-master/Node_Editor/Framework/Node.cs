@@ -367,20 +367,47 @@ namespace NodeEditorFramework
         {
             return Color.grey;
         }
+        public static float m_DropShadowMult=.58f;
+        public static float m_DropShadowMult2=.15f;
+        public static float m_WireSize=8;
+        public static float m_WireSize2=20;
+        public static float m_Saturation = .5f;
+        public static float m_WireColbright = .5f;
+        
 
+        public static float m_DropShadowOffset=20;
+        public static float m_DropShadowExpand=10;
         protected static Texture2D ms_SelectedBox;
+        protected static Texture2D ms_DropShadow;
         /// <summary>
         /// Draws the node frame and calls NodeGUI. Can be overridden to customize drawing.
         /// </summary>
         protected internal virtual void DrawNode()
         {
+            if (ms_DropShadow == null)
+            {
+                ms_DropShadow= ResourceManager.LoadTexture("Textures/DropShadow.png");
+            }
             // TODO: Node Editor Feature: Custom Windowing System
             // Create a rect that is adjusted to the editor zoom
             Rect nodeRect = rect;
             nodeRect.position += NodeEditor.curEditorState.zoomPanAdjust + NodeEditor.curEditorState.panOffset;
             contentOffset = new Vector2(0, 20);
             var was = GUI.color;
-            GUI.color = GetTitleBoxColor();
+
+            Rect shadowRect = new Rect(nodeRect.x+ m_DropShadowOffset- m_DropShadowExpand, nodeRect.y+ m_DropShadowOffset- m_DropShadowExpand, nodeRect.width+ m_DropShadowExpand*2.0f, nodeRect.height+ m_DropShadowExpand*2.0f);
+            GUI.color=Color.white* m_DropShadowMult;
+            GUI.DrawTexture(shadowRect, ms_DropShadow, ScaleMode.StretchToFill);
+
+
+
+            
+            
+            Color coluse = GetTitleBoxColor();
+            coluse.r += Node.m_Saturation;
+            coluse.g += Node.m_Saturation;
+            coluse.b += Node.m_Saturation;
+            GUI.color = coluse;
             bool selected = NodeEditor.curEditorState.selectedNode == this || NodeEditor.curEditorState.selectedNodes.Contains(this);
 
             Rect bodyRect = new Rect(nodeRect.x, nodeRect.y + contentOffset.y, nodeRect.width,

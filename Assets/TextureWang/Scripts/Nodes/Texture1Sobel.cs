@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.TextureWang.Scripts.Nodes
 {
-    [Node (false, "OneInput/EdgeDetectSobel")]
+    [Node (false, "Filter/EdgeDetectSobel")]
     public class Texture1Sobel : TextureMathOp
     {
         public const string ID = "Texture1Sobel";

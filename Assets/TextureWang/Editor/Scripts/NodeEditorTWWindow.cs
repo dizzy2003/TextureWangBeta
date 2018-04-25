@@ -19,7 +19,7 @@ namespace TextureWang
   
     public class NodeEditorTWWindow : EditorWindow , ITreeDataProvider
     {
-        public static Version m_Version = new Version(0,6,0,0);
+        public static Version m_Version = new Version(0,6,5,0);
         private string m_Name;
         private string m_LastLoadedName;
         // Information about current instance
@@ -52,7 +52,7 @@ namespace TextureWang
 
 
         private WWW wwwShader1 = null;
-
+        public bool m_OpenAppearance;
 
         #region General 
 
@@ -368,7 +368,7 @@ namespace TextureWang
                         if (assetPath.Length > 0)
                         {
                             node.m_CanvasGuid = AssetDatabase.AssetPathToGUID(assetPath);
-                            Debug.LogError(" set canvasGuid from asset >" + node.m_CanvasGuid + "<");
+//                            Debug.LogError(" set canvasGuid from asset >" + node.m_CanvasGuid + "<");
                             string fname = Path.GetFileName(assetPath);
                             fname = Path.ChangeExtension(fname, "");
                             node.name = "Sub:" + fname;
@@ -377,6 +377,7 @@ namespace TextureWang
 
                         node.OnLoadCanvas();
                         m_PostOnLoadCanvasFixup = node;
+                        NodeEditor.RecalculateFrom(node);
 
                     }
                     else
@@ -770,6 +771,7 @@ namespace TextureWang
             return n;
         }
 
+        
 
         public void DrawSideWindow ()
         {
@@ -877,9 +879,31 @@ namespace TextureWang
                 NodeEditor.RecalculateAll(canvasCache.nodeCanvas);
             }
 
+            bool changed = GUI.changed;
+            GUI.changed = false;
             NodeEditorGUI.knobSize = EditorGUILayout.IntSlider (new GUIContent ("Handle Size", "The size of the Node Input/Output handles"), NodeEditorGUI.knobSize, 12, 20);
             canvasCache.editorState.zoom = EditorGUILayout.Slider(new GUIContent("Zoom", "Use the Mousewheel. Seriously."), canvasCache.editorState.zoom, 0.2f, 4);
+            m_OpenAppearance = EditorGUILayout.Foldout(m_OpenAppearance, "");
+            if (m_OpenAppearance)
+            {
+                Node.m_DropShadowMult = EditorGUILayout.Slider(new GUIContent("DropShadow", ""), Node.m_DropShadowMult,
+                    0.0f, 1);
+                Node.m_DropShadowMult2 = EditorGUILayout.Slider(new GUIContent("DropShadow Wires", ""),
+                    Node.m_DropShadowMult2, 0.0f, 1);
+                Node.m_WireSize = EditorGUILayout.Slider(new GUIContent("m_WireSize", ""), Node.m_WireSize, 0.0f, 30);
+                Node.m_WireSize2 = EditorGUILayout.Slider(new GUIContent("WireSize Shadow", ""), Node.m_WireSize2, 0.0f,
+                    50);
+                Node.m_Saturation = EditorGUILayout.Slider(new GUIContent("Saturation", ""), Node.m_Saturation, 0.0f, 1);
+                Node.m_WireColbright = EditorGUILayout.Slider(new GUIContent("m_WireColbright", ""),
+                    Node.m_WireColbright, 0.0f, 1);
 
+                Node.m_DropShadowOffset = EditorGUILayout.Slider(new GUIContent("DropShadowOffset", ""),
+                    Node.m_DropShadowOffset, -50.0f, 50);
+                Node.m_DropShadowExpand = EditorGUILayout.Slider(new GUIContent("m_DropShadowExpand", ""),
+                    Node.m_DropShadowExpand, 0f, 50);
+            }
+            bool changeView = GUI.changed;
+            GUI.changed = changed;
             if (canvasCache.nodeCanvas != null)
             {
                 canvasCache.nodeCanvas.m_DefaultTextureWidth =
@@ -939,8 +963,14 @@ namespace TextureWang
                 canvasCache.editorState.selectedNode.DrawNodePropertyEditor();
                 if (GUI.changed)
                     NodeEditor.RecalculateFrom(PriorLoop(canvasCache.editorState.selectedNode));
+                else
+                if(changeView)
+                {
+                    Repaint();
+                }
 
             }
+
             
 
             //            var assets = UnityEditor.AssetDatabase.FindAssets("NodeCanvas"); 

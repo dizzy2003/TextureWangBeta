@@ -15,6 +15,12 @@ namespace UnityEditor.TreeViewExamples
         [NonSerialized] TreeElement m_Parent;
         [NonSerialized] List<TreeElement> m_Children;
 
+
+        public virtual Texture2D GetIcon1()
+        {
+            return null;
+        }
+
         public int depth
         {
             get { return m_Depth; }

@@ -34,7 +34,8 @@ namespace NodeEditorFramework
 		/// </summary>
 		public static TypeData GetTypeData (string typeName)
 		{
-			if (types == null || types.Count == 0)
+		    
+            if (types == null || types.Count == 0)
 				FetchTypes ();
 			TypeData typeData;
 			if (!types.TryGetValue (typeName, out typeData))
@@ -153,7 +154,7 @@ namespace NodeEditorFramework
 	{
 		public string Identifier { get { return "Float"; } }
 		public Type Type { get { return typeof(float); } }
-		public Color Color { get { return Color.cyan; } }
+		public Color Color { get { return new Color(.5f,1,1,1); } }
 		public string InKnobTex { get { return "Textures/In_Knob.png"; } }
 		public string OutKnobTex { get { return "Textures/Out_Knob.png"; } }
 	}

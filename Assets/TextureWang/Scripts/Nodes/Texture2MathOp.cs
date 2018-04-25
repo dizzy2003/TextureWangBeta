@@ -47,11 +47,13 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public override bool Calculate()
         {
+/*
             if (!allInputsReady())
             {
                 Debug.LogError(" input not ready "+this);
                 return false;
             }
+*/
             TextureParam input = null;
             TextureParam input2 = null;
             if (Inputs == null||Inputs.Count==0)
@@ -63,10 +65,12 @@ namespace Assets.TextureWang.Scripts.Nodes
             {
                 return false;
             }
-            if (Inputs[0].connection != null)
-                input = Inputs[0].connection.GetValue<TextureParam>();
-            if (Inputs[1].connection != null)
-                input2 = Inputs[1].connection.GetValue<TextureParam>();
+            if (!GetInput(0, out input))
+                return false;
+            if (!GetInput(1, out input2))
+                return false;
+
+
             if (m_Param == null)
                 m_Param = new TextureParam(m_TexWidth,m_TexHeight);
             if (input == null || input2==null)

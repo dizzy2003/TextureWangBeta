@@ -56,12 +56,8 @@ namespace Assets.TextureWang.Scripts.Nodes
         public override void DrawNodePropertyEditor()
         {
             base.DrawNodePropertyEditor();
-
-
-            m_Input = (Texture2D)EditorGUI.ObjectField(new Rect(0, 590, 250, 250), m_Input, typeof(Texture2D), false);
-
-
-
+            
+            m_Input = (Texture2D)EditorGUILayout.ObjectField(m_Input, typeof(Texture2D), false, GUILayout.MinHeight(200), GUILayout.MinHeight(200));
 
         }
         public override bool Calculate()
