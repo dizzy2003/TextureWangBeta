@@ -696,7 +696,8 @@ namespace TextureWang
 
 
             NodeEditor.ClientRepaints -= Repaint;
-            NodeEditor.ClientRepaints -= m_InspectorWindow.Repaint;
+            if(m_InspectorWindow!=null)
+                NodeEditor.ClientRepaints -= m_InspectorWindow.Repaint;
 
             EditorLoadingControl.justLeftPlayMode -= NormalReInit;
             EditorLoadingControl.justOpenedNewScene -= NormalReInit;
@@ -814,6 +815,7 @@ namespace TextureWang
             {
                 string lastpath = NodeEditor.editorPathLoadSave + "Saves/";
                 lastpath = GetLastUsedPath(lastpath);
+                Debug.Log(" last path for load canvas"+lastpath);
                 string path = EditorUtility.OpenFilePanel("Load Node Canvas", lastpath, "asset");
 
                 if (!path.Contains(Application.dataPath))
@@ -960,8 +962,9 @@ namespace TextureWang
                         canvasCache.NewEditorState();
                     }
                 }
-                canvasCache.editorState.selectedNode.DrawNodePropertyEditor();
-                if (GUI.changed)
+                if(canvasCache.editorState.selectedNode)
+                    canvasCache.editorState.selectedNode.DrawNodePropertyEditor();
+                if (GUI.changed && canvasCache.editorState.selectedNode)
                     NodeEditor.RecalculateFrom(PriorLoop(canvasCache.editorState.selectedNode));
                 else
                 if(changeView)
