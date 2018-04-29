@@ -147,8 +147,11 @@ namespace TextureWang
                             m.SetTexture("_ParallaxMap", height);
                             m.SetTexture("_MetallicGlossMap", metal);
                             m.SetTexture("_OcclusionMap", occ);
-                            AssetDatabase.CreateAsset(m, m_Path.Replace(".png", "_material.mat"));
 
+                            string matPath = m_Path.Replace(".png", "_material.mat");
+                            AssetDatabase.CreateAsset(m, matPath);
+                            AssetDatabase.ImportAsset(matPath, ImportAssetOptions.ForceSynchronousImport);
+                            EditorUtility.SetDirty(m);
                             var mr = FindObjectOfType<MeshRenderer>();
                             if (mr != null)
                                 mr.material = m;
@@ -165,7 +168,10 @@ namespace TextureWang
                                 m.SetFloat("_Metallic", 1.0f);
                                 m.SetFloat("_Glossiness", 1.0f);
                                 m.SetFloat("_Tess", 100.0f);
-                                AssetDatabase.CreateAsset(m, m_Path.Replace(".png", "_material.mat"));
+                                string matPath = m_Path.Replace(".png", "_material.mat");
+                                AssetDatabase.CreateAsset(m, matPath);
+                                AssetDatabase.ImportAsset(matPath, ImportAssetOptions.ForceSynchronousImport);
+                                EditorUtility.SetDirty(m);
 
                                 var mr = FindObjectOfType<MeshRenderer>();
                                 if (mr != null)

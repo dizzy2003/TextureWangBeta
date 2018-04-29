@@ -122,9 +122,9 @@ namespace TextureWang
                         if (GUILayout.Button("Go get New version "))
                         {
                             this.Close();
+                            
                             Application.OpenURL("https://github.com/dizzy2003/TextureWang");
                         }
-
                         if (GUILayout.Button("Ignore new version"))
                         {
 
@@ -155,6 +155,13 @@ namespace TextureWang
 
 
             GUILayout.BeginArea(buttonArea);
+            if (GUILayout.Button("Watch video Tutorial "))
+            {
+                this.Close();
+
+                Application.OpenURL("https://youtu.be/FmczC67Dyo8");
+            }
+
             EditorGUILayout.LabelField(str, EditorStyles.wordWrappedLabel);
             if (GUILayout.Button("OK"))
             {
