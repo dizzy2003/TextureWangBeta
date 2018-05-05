@@ -31,6 +31,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             node.name = "CalcNormal";
             node.CreateInput("Texture", "TextureParam", NodeSide.Left, 50);
             node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
+            node.m_TexMode=TexMode.ColorRGB;
 //        node.m_OpType = TexOP.CalcNormal;
             return node;
         }

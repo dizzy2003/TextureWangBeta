@@ -129,36 +129,46 @@ namespace TextureWang
                     NodeEditor.curNodeCanvas = NodeEditorTWWindow.canvasCache.nodeCanvas;
 
                     float yOffset = 200;
-                    var albedo = MakeTextureNodeAndTexture("_albedo", new Vector2(0, 0));
-                    var norms = MakeTextureNodeAndTexture("_normal", new Vector2(0, 1*yOffset), true);
+                    Node node;
+                    var albedo = MakeTextureNodeAndTexture("_albedo", new Vector2(0, 0),false, "UnityTextureOutput",out node);
+                    var norms = MakeTextureNodeAndTexture("_normal", new Vector2(0, 1*yOffset), true, "UnityTextureOutput", out node);
 
-                    var height = MakeTextureNodeAndTexture("_height", new Vector2(0, 2*yOffset));
-                    var metal = MakeTextureNodeAndTexture("_MetalAndRoughness", new Vector2(0, 3*yOffset),false, "OutputMetalicAndRoughness");
+                    Node calcNorm = Node.Create("CalcNormal", node.rect.position-new Vector2(250,0));
+
+                    node.Inputs[0].ApplyConnection(calcNorm.Outputs[0]);
+
+
+                    var height = MakeTextureNodeAndTexture("_height", new Vector2(0, 2*yOffset), false, "UnityTextureOutput", out node);
+                    var metal = MakeTextureNodeAndTexture("_MetalAndRoughness", new Vector2(0, 3*yOffset),false, "OutputMetalicAndRoughness", out node);
+
+                    CreateOpCol col = Node.Create("CreateOpCol", node.rect.position - new Vector2(250, -100)) as CreateOpCol;
+                    col.m_TexMode=TextureNode.TexMode.Greyscale;
+                    node.Inputs[1].ApplyConnection(col.Outputs[0]);
+
+                    CreateOpCol col2 = Node.Create("CreateOpCol", node.rect.position - new Vector2(250, 100)) as CreateOpCol;
+                    col2.m_TexMode = TextureNode.TexMode.Greyscale;
+                    node.Inputs[0].ApplyConnection(col2.Outputs[0]);
+
+
                     Texture2D occ = null;
                     if (m_CreateMaterialType==0 || !m_CreateMaterial)
-                        occ = MakeTextureNodeAndTexture("_occlusion", new Vector2(0, 4*yOffset));
+                        occ = MakeTextureNodeAndTexture("_occlusion", new Vector2(0, 4*yOffset), false, "UnityTextureOutput", out node);
                     if (m_CreateMaterial)
                     {
+                        Material m;
                         if (m_CreateMaterialType == 0)
                         {
-                            var m = new Material(Shader.Find("Standard"));
+                            m = new Material(Shader.Find("Standard"));
                             m.mainTexture = albedo;
                             m.SetTexture("_BumpMap", norms);
                             m.SetTexture("_ParallaxMap", height);
                             m.SetTexture("_MetallicGlossMap", metal);
                             m.SetTexture("_OcclusionMap", occ);
 
-                            string matPath = m_Path.Replace(".png", "_material.mat");
-                            AssetDatabase.CreateAsset(m, matPath);
-                            AssetDatabase.ImportAsset(matPath, ImportAssetOptions.ForceSynchronousImport);
-                            EditorUtility.SetDirty(m);
-                            var mr = FindObjectOfType<MeshRenderer>();
-                            if (mr != null)
-                                mr.material = m;
                         }
                         else //if (m_CreateTesselatedMaterial)
                         {
-                            var m = new Material(Shader.Find("Tessellation/Standard Fixed"));
+                            m = new Material(Shader.Find("Tessellation/Standard Fixed"));
                             if (m != null)
                             {
                                 m.mainTexture = albedo;
@@ -168,16 +178,27 @@ namespace TextureWang
                                 m.SetFloat("_Metallic", 1.0f);
                                 m.SetFloat("_Glossiness", 1.0f);
                                 m.SetFloat("_Tess", 100.0f);
-                                string matPath = m_Path.Replace(".png", "_material.mat");
-                                AssetDatabase.CreateAsset(m, matPath);
-                                AssetDatabase.ImportAsset(matPath, ImportAssetOptions.ForceSynchronousImport);
-                                EditorUtility.SetDirty(m);
-
-                                var mr = FindObjectOfType<MeshRenderer>();
-                                if (mr != null)
-                                    mr.material = m;
+      
                             }
                         }
+                        if (m != null)
+                        {
+                            m.EnableKeyword("_NORMALMAP");
+                            m.EnableKeyword("_METALLICGLOSSMAP");
+                            
+                            
+
+                            string matPath = m_Path.Replace(".png", "_material.mat");
+                            AssetDatabase.CreateAsset(m, matPath);
+                            AssetDatabase.ImportAsset(matPath, ImportAssetOptions.ForceSynchronousImport);
+                            EditorUtility.SetDirty(m);
+
+                            var mr = FindObjectOfType<MeshRenderer>();
+                            if (mr != null)
+                                mr.material = m;
+
+                        }
+
                     }
                 }
 
@@ -188,7 +209,7 @@ namespace TextureWang
             GUILayout.EndHorizontal();
         }
 
-        private Texture2D MakeTextureNodeAndTexture(string texName, Vector2 _pos, bool _isNorm = false,string _nodeTypeName= "UnityTextureOutput")
+        private Texture2D MakeTextureNodeAndTexture(string texName, Vector2 _pos, bool _isNorm ,string _nodeTypeName,out Node _node)
         {
             string albedo = MakePNG(m_Path, texName);
             AssetDatabase.Refresh();
@@ -211,6 +232,7 @@ namespace TextureWang
 
 
             var n = Node.Create(_nodeTypeName, _pos);
+            _node = n;
             UnityTextureOutput uto = n as UnityTextureOutput;
             if (uto != null)
             {
