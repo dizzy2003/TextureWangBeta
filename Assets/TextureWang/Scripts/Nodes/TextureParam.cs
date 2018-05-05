@@ -305,6 +305,49 @@ namespace Assets.TextureWang.Scripts.Nodes
             }
 
         }
+
+        //if we need the data extracted from a renderTexture (for eaxmple to get CPU access to pixles
+        public Texture2D GetTex2D()
+        {
+            if (m_Tex != null)
+                return m_Tex;
+            var tex = new Texture2D(m_Width, m_Height, TextureParam.ms_TexFormat, false);
+
+            if (IsGrey())
+            {
+                //for grey scale we have to create a new texture with alpha channel ==1
+
+                RenderTexture rt = new RenderTexture(m_Width, m_Height, 0, RenderTextureFormat.ARGB32);
+
+                Material m = TextureNode.GetMaterial("TextureOps");
+                m.SetInt("_MainIsGrey", IsGrey() ? 1 : 0);
+                m.SetInt("_TextureBIsGrey", 1);
+                m.SetTexture("_GradientTex", GetWhite().m_Destination);
+
+                Graphics.Blit(GetHWSourceTexture(), rt, m, (int)ShaderOp.CopyColorAndAlpha);
+
+                RenderTexture.active = rt;
+                tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+                //input.DestinationToTexture(m_Output);
+                tex.Apply();
+                RenderTexture.active = null;
+                rt.DiscardContents();
+                rt.Release();
+                rt = null;
+
+            }
+            else
+            {
+
+                RenderTexture.active = m_Destination;
+                tex.ReadPixels(new Rect(0, 0, m_Width, m_Height), 0, 0);
+                tex.Apply();
+                RenderTexture.active = null;
+
+            }
+            return tex;
+        }
+
         public void SavePNG(string path,int _width,int _height)
         {
             var tex = new Texture2D(_width, _height, TextureParam.ms_TexFormat, false);
