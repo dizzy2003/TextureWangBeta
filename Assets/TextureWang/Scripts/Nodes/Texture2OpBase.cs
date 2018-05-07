@@ -10,13 +10,13 @@ namespace Assets.TextureWang.Scripts.Nodes
         public FloatRemap m_Value2;
 
         //This really shouldnt exist anymore now every op has its own class
-        public enum TexOp { Add, Min, Multiply, Power,Gradient,Blend ,Distort,Max,Sub,DirectionalWarp, SrcBlend,EdgeDistDir,AngleWarp,GridSplatterProb, SmoothDirection }
+        public enum TexOp { Add, Min, Multiply, Power,Gradient,Blend ,Distort,Max,Sub,DirectionalWarp, SrcBlend,EdgeDistDir,AngleWarp,GridSplatterProb, SmoothDirection,Quadify }
 
         protected internal override void InspectorNodeGUI()
         {
 
         }
-
+        
   
 
         public void Gradient( TextureParam _input, TextureParam _inputB, TextureParam _output)

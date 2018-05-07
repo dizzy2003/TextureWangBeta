@@ -28,6 +28,8 @@ namespace Assets.TextureWang.Scripts.Nodes
         {
 
             UnityTextureDrawGradientInput node = CreateInstance<UnityTextureDrawGradientInput> ();
+            node.m_TexWidth = 256;
+            node.m_TexHeight = 1;
             node.m_Param = new TextureParam(256,1);
             node.data=node.m_Param.AllocData();
             node.rect = new Rect (pos.x, pos.y, 250, 250);

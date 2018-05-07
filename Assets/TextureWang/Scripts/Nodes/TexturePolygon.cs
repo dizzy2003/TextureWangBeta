@@ -17,6 +17,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         public FloatRemap m_X ;
         public FloatRemap m_Y;
         public FloatRemap m_Radius  ;
+        public FloatRemap m_Angle;
 
         public FloatRemap m_RandomizeVertPos;
         public FloatRemap m_RandomizeRadius;
@@ -53,6 +54,7 @@ namespace Assets.TextureWang.Scripts.Nodes
 
             node.m_RandomizeOuterBrightness = new FloatRemap(0.0f, 0, 10);
             node.m_RandomizeInnerBrightness = new FloatRemap(0.0f, 0, 10);
+            node.m_Angle = new FloatRemap(0.0f, 0, 360);
 
             node.m_IncrementBrightnessPerVert = new FloatRemap(0.0f, -.5f, .5f);
             node.m_Seed.m_Mult = 9999999;
@@ -88,6 +90,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             m_Seed.SliderLabelInt(this, "Seed");
             m_Sides.SliderLabelInt(this, "SideCount");
             m_Radius.SliderLabel(this, "Radius");
+            m_Angle.SliderLabel(this, "Angle");
             m_X.SliderLabel(this, "Mid X");
             m_Y.SliderLabel(this, "Mid Y");
 
@@ -118,12 +121,12 @@ namespace Assets.TextureWang.Scripts.Nodes
             RenderTexture destination = CreateRenderDestination(null, _output);
 
             TriangleDraw.GPUStart(destination);
-            float angle = 0;
+            float angle = 0;;
 
             Color prevCol=Color.white*(m_OuterBrightness+m_RandomizeOuterBrightness*Random.value);
             prevCol.a = 1;
 
-            Vector3 prev=new Vector3(m_X+Mathf.Cos(angle)*Radius, m_Y + Mathf.Sin(angle) * Radius,0);
+            Vector3 prev=new Vector3(m_X+Mathf.Cos(angle+ m_Angle * Mathf.Deg2Rad) *Radius, m_Y + Mathf.Sin(angle + m_Angle * Mathf.Deg2Rad) * Radius,0);
             prev += new Vector3((Random.value-0.5f) * m_RandomizeVertPos, (Random.value - 0.5f) * m_RandomizeVertPos, 0);
         
             Color midCol = Color.white * (m_InnerBrightness + m_RandomizeInnerBrightness * Random.value);
@@ -142,7 +145,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             float count = 1;
             for ( angle = step; angle < Mathf.PI*2-step*0.5f; angle += step,count+=1.0f)
             {
-                Vector3 pos = new Vector3(m_X + Mathf.Cos(angle) * Radius, m_Y + Mathf.Sin(angle) * Radius, 0);
+                Vector3 pos = new Vector3(m_X + Mathf.Cos(angle + m_Angle * Mathf.Deg2Rad) * Radius, m_Y + Mathf.Sin(angle + m_Angle * Mathf.Deg2Rad) * Radius, 0);
                 pos+= new Vector3((Random.value - 0.5f) * m_RandomizeVertPos, (Random.value - 0.5f) * m_RandomizeVertPos, 0);
 
                 Color col = Color.white * (m_OuterBrightness + m_RandomizeOuterBrightness * Random.value+m_IncrementBrightnessPerVert*count);

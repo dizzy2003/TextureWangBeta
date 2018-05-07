@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: MetalPanel_material
+  m_Shader: {fileID: 4800000, guid: 5ed24df3a0fe3a847bd6e1980672f654, type: 3}
+  m_ShaderKeywords: _METALLICGLOSSMAP _NORMALMAP
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DispTex:
+        m_Texture: {fileID: 2800000, guid: aaad467320b3eb748a18e40098b92fb4, type: 3}
+        m_Scale: {x: 4, y: 4}
+        m_Offset: {x: 0, y: 0}
+    - _MOS:
+        m_Texture: {fileID: 2800000, guid: 3de9232c9c4c4314dac8e43f589726ee, type: 3}
+        m_Scale: {x: 4, y: 4}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: fb5ab7a8e6491204b92d5a4417100557, type: 3}
+        m_Scale: {x: 4, y: 4}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: a1290b6b71a150d4ba928e07b7f65af8, type: 3}
+        m_Scale: {x: 4, y: 4}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _DispOffset: 0.5
+    - _Displacement: 0.126
+    - _Glossiness: 1
+    - _Metallic: 1
+    - _Tess: 100.9
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 0}

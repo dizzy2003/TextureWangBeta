@@ -145,7 +145,7 @@ namespace UnityEditor.TreeViewExamples
 	    public float m_PrevWidth;
 		void OnGUI ()
 		{
-            if(m_PrevWidth!=position.width)
+            if(m_PrevWidth!=position.width && m_TreeView!=null)
                 m_TreeView.Reload();
 		    m_PrevWidth = position.width;
             if (GetData() == null)

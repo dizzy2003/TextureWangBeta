@@ -80,6 +80,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         SmoothedMask=55,
         SmoothedDirection=56,
         CopyRGBAChannels = 57,
+        Quadify=58,
 
 
         SetCol = 0,

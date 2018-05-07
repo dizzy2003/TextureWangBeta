@@ -27,6 +27,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             node.m_Value3 = new FloatRemap(1.0f, 0, 3);
             node.CreateInput("Src", "TextureParam", NodeSide.Left, 50);
             node.CreateInput("Direction(Slope)", "TextureParam", NodeSide.Left, 70);
+            node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
 
             node.m_OpType=TexOp.SmoothDirection;
             return node;

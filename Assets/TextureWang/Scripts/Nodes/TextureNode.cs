@@ -241,12 +241,22 @@ namespace Assets.TextureWang.Scripts.Nodes
 
 
         }
+
+        public  TextureNode()
+        {
+            if (NodeEditor.curNodeCanvas != null)
+            {
+                m_TexWidth = NodeEditor.curNodeCanvas.m_DefaultTextureWidth;
+                m_TexHeight = NodeEditor.curNodeCanvas.m_DefaultTextureHeight;
+            }
+
+        }
+
         protected override void InitBase()
         {
-            m_TexWidth = NodeEditor.curNodeCanvas.m_DefaultTextureWidth;
-            m_TexHeight = NodeEditor.curNodeCanvas.m_DefaultTextureHeight;
             m_PixelDepth = NodeEditor.curNodeCanvas.m_DefaultChannelType;
-            m_Param = new TextureParam(m_TexWidth, m_TexHeight);
+            if(m_Param==null) //some nodes like drawgradient alloc their own special sized output
+                m_Param = new TextureParam(m_TexWidth, m_TexHeight);
 
             base.InitBase();
 

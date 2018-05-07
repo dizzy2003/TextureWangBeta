@@ -65,7 +65,7 @@
 
                 o.Albedo = c.rgb;
                 o.Metallic = mos.r * _Metallic;
-                o.Smoothness = mos.a *_Glossiness;
+                o.Smoothness = mos.b *_Glossiness;
                 o.Occlusion = mos.g;
                 o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_MainTex));
             }
