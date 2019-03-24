@@ -204,7 +204,7 @@ namespace NodeEditorFramework
 			ProcessCanvas (ref nodeCanvas, createWorkingCopy);
 
 		#if UNITY_EDITOR
-			UnityEditor.AssetDatabase.Refresh ();
+//			UnityEditor.AssetDatabase.Refresh ();
 		#endif
 			NodeEditorCallbacks.IssueOnLoadCanvas (nodeCanvas);
 			return nodeCanvas;

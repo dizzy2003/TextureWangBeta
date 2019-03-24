@@ -56,6 +56,26 @@ namespace Assets.TextureWang.Scripts
         */
             GL.Begin(GL.TRIANGLES);
         }
+        public static void GPUStart(RenderTexture _out,int mode)
+        {
+
+            Graphics.SetRenderTarget(_out);
+            CreateLineMaterial();
+            ClearRenderTarget();
+
+
+
+            GL.PushMatrix();
+            //ProcHeight.Get().GetGPUMaskMat().SetColor("Color", Color.white);
+            m_LineMaterial.SetPass(0);
+            GL.LoadOrtho();
+            /*
+                float ox = (ProcHeight.Get().m_OffsetX)*1024;
+                float oz = (ProcHeight.Get().m_OffsetZ)*1024;
+                GL.LoadPixelMatrix(ox,oz,ox+128,oz+128);
+        */
+            GL.Begin(mode);
+        }
         public static void GPUEnd()
         {
             GL.End();
@@ -75,6 +95,18 @@ namespace Assets.TextureWang.Scripts
             GL.Vertex(v2);
         }
 
+        public static void AddVert(Vector3 v0)
+        {
+            
+
+            GL.Vertex(v0);
+        }
+        public static void AddCol( Color c0)
+        {
+            GL.Color(c0);
+
+            
+        }
 
         public static void Test(RenderTexture _out)
         {

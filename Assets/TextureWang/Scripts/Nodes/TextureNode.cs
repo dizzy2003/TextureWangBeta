@@ -92,6 +92,17 @@ namespace Assets.TextureWang.Scripts.Nodes
             else
                 _out = TextureParam.GetWhite();
 
+            if (m_ClampInputUV)
+            {
+                if(_out.m_Destination)
+                    _out.m_Destination.wrapMode = TextureWrapMode.Clamp;
+            }
+            else
+            {
+                if (_out.m_Destination)
+                    _out.m_Destination.wrapMode = TextureWrapMode.Repeat;
+            }
+
             return true;
         }
 
@@ -113,13 +124,14 @@ namespace Assets.TextureWang.Scripts.Nodes
         }
         protected internal override void CopyScriptableObjects(System.Func<ScriptableObject, ScriptableObject> replaceSerializableObject)
         {
-/*            
-            ms_MinX = Mathf.Min(ms_MinX, rect.x);
-            ms_MinY = Mathf.Min(ms_MinY, rect.y);
-            ms_MaxX = Mathf.Max(ms_MaxX, rect.x);
-            ms_MaxY = Mathf.Max(ms_MaxY, rect.y);
-            Debug.Log("min x " + ms_MinX + " max X" + ms_MaxX + " min y " + ms_MinY + " max y " + ms_MaxY);
-*/
+            Debug.Log(" CopyScriptableObjects " + this);
+            /*            
+                        ms_MinX = Mathf.Min(ms_MinX, rect.x);
+                        ms_MinY = Mathf.Min(ms_MinY, rect.y);
+                        ms_MaxX = Mathf.Max(ms_MaxX, rect.x);
+                        ms_MaxY = Mathf.Max(ms_MaxY, rect.y);
+                        Debug.Log("min x " + ms_MinX + " max X" + ms_MaxX + " min y " + ms_MinY + " max y " + ms_MaxY);
+            */
             ConnectRemapFloats(this,replaceSerializableObject);
         }
 
@@ -244,6 +256,7 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public  TextureNode()
         {
+            
             if (NodeEditor.curNodeCanvas != null)
             {
                 m_TexWidth = NodeEditor.curNodeCanvas.m_DefaultTextureWidth;

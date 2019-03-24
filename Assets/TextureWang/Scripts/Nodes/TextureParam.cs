@@ -81,6 +81,8 @@ namespace Assets.TextureWang.Scripts.Nodes
         SmoothedDirection=56,
         CopyRGBAChannels = 57,
         Quadify=58,
+        MapSphere=59,
+        Symetry=60,
 
 
         SetCol = 0,

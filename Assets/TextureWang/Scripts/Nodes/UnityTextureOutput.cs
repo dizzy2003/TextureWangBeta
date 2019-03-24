@@ -47,9 +47,9 @@ namespace Assets.TextureWang.Scripts.Nodes
         {
             if (GUILayout.Button("save png"))
             {
-
-                ms_PathName = EditorUtility.SaveFilePanel("SavePNG", "Assets/", ms_PathName, "png");
-
+                string name = Path.GetFileName(ms_PathName);
+                ms_PathName = EditorUtility.SaveFilePanel("SavePNG", Path.GetDirectoryName(ms_PathName), name, "png");
+                Debug.Log(" path "+ ms_PathName);
                 
                 SavePNG(m_Output, ms_PathName);
             }
@@ -83,7 +83,7 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public void SavePNG(Texture2D tex,string path)
         {
-
+            Debug.Log("save png width "+tex.width+" height "+tex.height);
             byte[] bytes = tex.EncodeToPNG();
 
             if (!string.IsNullOrEmpty(path))

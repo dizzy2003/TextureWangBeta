@@ -867,6 +867,21 @@ namespace TextureWang
                 }
                 NodeEditor.RecalculateAll(canvasCache.nodeCanvas);
             }
+            if (GUILayout.Button(new GUIContent("Set All Selected to Default Size", "")))
+            {
+                foreach (var n in canvasCache.editorState.selectedNodes)
+                {
+                    if (n is TextureNode)
+                    {
+                        var tn = n as TextureNode;
+                        tn.m_TexWidth = canvasCache.nodeCanvas.m_DefaultTextureWidth;
+                        tn.m_TexHeight = canvasCache.nodeCanvas.m_DefaultTextureHeight;
+                    }
+                }
+
+                NodeEditor.RecalculateAll(canvasCache.nodeCanvas);
+            }
+
             if (GUILayout.Button(new GUIContent("Halve All texture Sizes", "")))
             {
                 foreach (var n in canvasCache.nodeCanvas.nodes)

@@ -6,7 +6,7 @@ using UnityEngine;
 [Node (false, "Float/MathOp")]
 public class MathOp : Node 
 {
-    public enum CalcType { Cos,Sin,Tan,Floor,Frac }
+    public enum CalcType { Cos,Sin,Tan,Floor,Frac,Sqrt,Clamp01 }
     public CalcType m_Type = CalcType.Cos;
 
     public const string ID = "MathOp";
@@ -102,6 +102,12 @@ public class MathOp : Node
                 break;
             case CalcType.Frac:
                 Outputs[0].SetValue<float>(m_Value1-Mathf.Floor(m_Value1));
+                break;
+            case CalcType.Sqrt:
+                Outputs[0].SetValue<float>(Mathf.Sqrt(m_Value1));
+                break;
+            case CalcType.Clamp01:
+                Outputs[0].SetValue<float>(Mathf.Clamp01(m_Value1));
                 break;
         }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using NodeEditorFramework;
 using NodeEditorFramework.Standard;
 using NodeEditorFramework.Utilities;
@@ -95,6 +96,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         public float m_StartAnimatedValue=0;
         public float m_EndAnimatedValue=1;
         public int m_LoopCount = 10;
+        public bool m_ExportAsSingleSpriteSheet;
 
 
 
@@ -180,7 +182,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         public override void DrawNodePropertyEditor() 
         {
             base.DrawNodePropertyEditor();
-
+            m_ExportAsSingleSpriteSheet = RTEditorGUI.Toggle(m_ExportAsSingleSpriteSheet,"Export as Sprite Sheet");
             m_StartAnimatedValue = RTEditorGUI.Slider("Start Animated Value ", m_StartAnimatedValue, -10, 10);
             m_EndAnimatedValue = RTEditorGUI.Slider("End Animated Value ", m_EndAnimatedValue, -10, 10);
             m_LoopCount = (int)RTEditorGUI.Slider("Frame Count ", m_LoopCount, 1, 64);
@@ -228,6 +230,11 @@ namespace Assets.TextureWang.Scripts.Nodes
 
             if (GUILayout.Button("save png's "))
             {
+                Texture2D texSpriteSheet = null;
+                if (m_ExportAsSingleSpriteSheet && m_Param != null)
+                    texSpriteSheet = new Texture2D(m_Param.m_Width * m_LoopCount,m_Param.m_Height,TextureFormat.ARGB32, false);
+                
+
                 foreach (var x in CalculateIE(0))
                 {
                     CreateOutputTexture();
@@ -238,8 +245,15 @@ namespace Assets.TextureWang.Scripts.Nodes
                             pathrename = m_PathName.Replace(".png", "0" + x + ".png");
                         else
                             pathrename = m_PathName.Replace(".png", "" + x + ".png");
-                    
-                        m_Param.SavePNG(pathrename,m_Param.m_Width,m_Param.m_Height);
+
+                        if (texSpriteSheet != null)
+                        {
+                            texSpriteSheet.SetPixels(x * m_Param.m_Width,0, m_Param.m_Width, m_Param.m_Height,m_Param.GetTex2D().GetPixels(0,0, m_Param.m_Width, m_Param.m_Height));
+
+                          
+                        }
+                        else
+                            m_Param.SavePNG(pathrename,m_Param.m_Width,m_Param.m_Height);
                     }
                     else
                     {
@@ -247,6 +261,16 @@ namespace Assets.TextureWang.Scripts.Nodes
                         break;
                     }
 
+                }
+                if (texSpriteSheet)
+                {
+                    texSpriteSheet.Apply();
+                    byte[] bytes = texSpriteSheet.EncodeToPNG();
+
+                    if (!string.IsNullOrEmpty(m_PathName))
+                    {
+                        File.WriteAllBytes(m_PathName, bytes);
+                    }
                 }
                 /*
                         InputNode m_AnimatedValue = Inputs[2].connection.body as InputNode;
@@ -343,7 +367,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             while (m_Loops < m_LoopCount)
             {
 
-                Debug.Log("Set Output 0 to "+t);
+//                Debug.Log("Set Output 0 to "+t);
                 Outputs[0].SetValue<float>(t);
 #if DEBUG_LOOPBASIC
             Debug.LogError("Loop Count Inc" + m_Loops + " / " + m_LoopCount + " percentage " +

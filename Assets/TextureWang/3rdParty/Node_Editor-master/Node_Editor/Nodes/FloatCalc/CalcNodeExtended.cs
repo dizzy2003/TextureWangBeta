@@ -6,7 +6,7 @@ using UnityEngine;
 [Node (false, "Float/Calculation")]
 public class CalcNodeExtended : Node 
 {
-    public enum CalcType { Add, Substract, Multiply, Divide,Mod }
+    public enum CalcType { Add, Substract, Multiply, Divide,Mod,Min,Max,Pow }
     public CalcType type = CalcType.Add;
 
     public const string ID = "calcNodeExtended";
@@ -100,6 +100,15 @@ public class CalcNodeExtended : Node
             case CalcType.Mod:
                 float div = m_Value1/m_Value2;
                 Outputs[0].SetValue<float>((div-Mathf.Floor(div))*m_Value2);
+                break;
+            case CalcType.Min:
+                Outputs[0].SetValue<float>(Mathf.Min(m_Value1, m_Value2));
+                break;
+            case CalcType.Max:
+                Outputs[0].SetValue<float>(Mathf.Max(m_Value1, m_Value2));
+                break;
+            case CalcType.Pow:
+                Outputs[0].SetValue<float>(Mathf.Pow(m_Value1, m_Value2));
                 break;
         }
 

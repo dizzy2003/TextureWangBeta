@@ -29,6 +29,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         public FloatRemap m_RandomizeInnerBrightness;
 
         public FloatRemap m_IncrementBrightnessPerVert;
+        public FloatRemap m_IncrementBrightnessPerVertMid;
 
         public const string ID = "TexturePolygon";
         public override string GetID { get { return ID; } }
@@ -57,6 +58,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             node.m_Angle = new FloatRemap(0.0f, 0, 360);
 
             node.m_IncrementBrightnessPerVert = new FloatRemap(0.0f, -.5f, .5f);
+            node.m_IncrementBrightnessPerVertMid = new FloatRemap(0.0f, -.5f, .5f);
             node.m_Seed.m_Mult = 9999999;
 
 
@@ -105,6 +107,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             m_RandomizeInnerBrightness.SliderLabel(this, "Randomize Inner Brightness (add)");
         
             m_IncrementBrightnessPerVert.SliderLabel(this, "Increment Brightness Per Vert)");
+            m_IncrementBrightnessPerVertMid.SliderLabel(this, "Increment Brightness Per Vert mid)");
         }
 
         float Radius
@@ -149,13 +152,14 @@ namespace Assets.TextureWang.Scripts.Nodes
                 pos+= new Vector3((Random.value - 0.5f) * m_RandomizeVertPos, (Random.value - 0.5f) * m_RandomizeVertPos, 0);
 
                 Color col = Color.white * (m_OuterBrightness + m_RandomizeOuterBrightness * Random.value+m_IncrementBrightnessPerVert*count);
+                Color midColUse = midCol+ Color.white * ( m_IncrementBrightnessPerVertMid*count);
                 col.a = 1;
 
                 TriangleDraw.AddVertsForTri(
                     prev,
                     mid,
                     pos,
-                    prevCol, midCol, col);
+                    prevCol, midColUse, col);
                 prev = pos;
                 prevCol = col;
             }

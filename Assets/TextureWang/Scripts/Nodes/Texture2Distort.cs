@@ -20,6 +20,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             node.name = "2Distort";
             node.m_Value =  new FloatRemap(10.0f,0,100);
             node.m_Value2 = new FloatRemap(1.0f,0,3);
+            node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
             node.CreateInput("Src", "TextureParam", NodeSide.Left, 50);
             node.CreateInput("Distort", "TextureParam", NodeSide.Left, 70);
             
