@@ -140,6 +140,9 @@ namespace Assets.TextureWang.Scripts.Nodes
 
                 if (ms_ExportPNG)
                 {
+                    if (UnityTextureOutput.ms_ExportPNGAnimated)
+                        path = path.Replace(".png", "" + UnityTextureOutput.ms_ExportPNGFrame + ".png");
+
                     SavePNG(m_Output, path);
                     importer.compressionQuality = importer.compressionQuality + 1; //try and force the import
                     importer.SaveAndReimport();

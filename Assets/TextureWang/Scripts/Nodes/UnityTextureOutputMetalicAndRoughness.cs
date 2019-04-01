@@ -1,4 +1,5 @@
 ﻿using NodeEditorFramework;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -100,7 +101,23 @@ namespace Assets.TextureWang.Scripts.Nodes
                 m_Output.Apply();
 
             }
-       
+            string path = AssetDatabase.GetAssetPath(m_Output);
+            TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(path);
+            if (UnityTextureOutput.ms_ExportPNG)
+            {
+                if (UnityTextureOutput.ms_ExportPNGAnimated)
+                    path = path.Replace(".png", "" + UnityTextureOutput.ms_ExportPNGFrame + ".png");
+                if (UnityTextureOutput.ms_ExportExternal)
+                {
+                    Debug.Log("filename is " + Path.GetFileName(path));
+                    path = UnityTextureOutput.ms_ExportExternalPath + Path.DirectorySeparatorChar + Path.GetFileName(path);
+                    Debug.Log("new path is " + path);
+                }
+                UnityTextureOutput.SavePNG(m_Output, path, !UnityTextureOutput.ms_ExportExternal);
+                
+                importer.compressionQuality = importer.compressionQuality + 1; //try and force the import
+                importer.SaveAndReimport();
+            }
 
             //Outputs[0].SetValue<TextureParam> (m_Param);
             return true;

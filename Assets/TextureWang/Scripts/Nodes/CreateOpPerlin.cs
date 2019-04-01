@@ -10,7 +10,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         private const string m_Help = "Perlin Noise, Integer scales produce wrapping texture output";
         public override string GetHelp() { return m_Help; }
 
-        public enum TexOP {  PerlinBm, PerlinTurb, PerlinRidge, VeroniNoise }
+        public enum TexOP {  PerlinBm, PerlinTurb, PerlinRidge, VeroniNoise,Simplex3D }
         public TexOP m_OpType = TexOP.PerlinBm;
 
 
@@ -33,6 +33,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             node.CreateOutput("Texture", "TextureParam", NodeSide.Right, 50);
             node.m_Value1 = new FloatRemap(20.0f,0,100);
             node.m_Value2 = new FloatRemap(20.0f,0,100);
+            node.m_Value3 = new FloatRemap(20.0f, 0, 100);
             node.m_Value5 = new FloatRemap(5.0f,0,100);
             node.m_Value6 = new FloatRemap(5.0f,0,100);
             node.m_lacunarity = new FloatRemap(2.0f,1,4);
@@ -87,6 +88,7 @@ namespace Assets.TextureWang.Scripts.Nodes
                 }
                 m_Value7.SliderLabel(this,"OffsetX");//, 0.0f, 1.0f);//,new GUIContent("Red", "Float"), m_R);
                 m_Value8.SliderLabel(this,"OffsetY");//, 0.0f, 1.0f);//,new GUIContent("Red", "Float"), m_R);
+                m_Value3.SliderLabel(this, "OffsetZ");//, 0.0f, 1.0f);//,new GUIContent("Red", "Float"), m_R);
 
                 //            m_frequency.SliderLabel(this,"Frequency", m_frequency, 0.0f, 100.0f);//,new GUIContent("Red", "Float"), m_R);
                 m_lacunarity.SliderLabel(this,"FreqScalePerOctave");//, 0.0f, 10.0f);//,new GUIContent("Red", "Float"), m_R);
@@ -148,6 +150,9 @@ namespace Assets.TextureWang.Scripts.Nodes
                         break;
                     case TexOP.VeroniNoise:
                         General(m_Value1, m_Value2, m_Value3,  m_Param, ShaderOp.VeroniNoise);
+                        break;
+                    case TexOP.Simplex3D:
+                        General(m_Value1, m_Value2, m_Value3, m_Param, ShaderOp.Simplex3D);
                         break;
                 }
             }

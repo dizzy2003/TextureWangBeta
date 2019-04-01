@@ -41,46 +41,47 @@ namespace NodeEditorFramework.Utilities
 				Init ();
 		}
 
-		public static void Init () 
-		{
-			// Fetch rect acessors using Reflection
-			Assembly UnityEngine = Assembly.GetAssembly (typeof (UnityEngine.GUI));
-			Type GUIClipType = UnityEngine.GetType ("UnityEngine.GUIClip", true);
+        public static void Init()
+        {
+            // As we can call Begin/Ends inside another, we need to save their states hierarchial in Lists (not Stack, as we need to iterate over them!):
+            currentRectStack = new List<Rect>();
+            rectStackGroups = new List<List<Rect>>();
+            GUIMatrices = new List<Matrix4x4>();
+            adjustedGUILayout = new List<bool>();
 
-			PropertyInfo topmostRect = GUIClipType.GetProperty ("topmostRect", BindingFlags.Static | BindingFlags.Public);
-			MethodInfo GetTopRect = GUIClipType.GetMethod ("GetTopRect", BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo ClipRect = GUIClipType.GetMethod ("Clip", BindingFlags.Static | BindingFlags.Public, Type.DefaultBinder, new Type[] { typeof(Rect) }, new ParameterModifier[] {});
+            // Fetch rect acessors using Reflection
+            Assembly UnityEngine = Assembly.GetAssembly(typeof(UnityEngine.GUI));
+            Type GUIClipType = UnityEngine.GetType("UnityEngine.GUIClip", true);
 
-			if (GUIClipType == null || topmostRect == null || GetTopRect == null || ClipRect == null) 
-			{
-				Debug.LogWarning ("GUIScaleUtility cannot run on this system! Compability mode enabled. For you that means you're not able to use the Node Editor inside more than one group:( Please PM me (Seneral @UnityForums) so I can figure out what causes this! Thanks!");
-				Debug.LogWarning ((GUIClipType == null? "GUIClipType is Null, " : "") + (topmostRect == null? "topmostRect is Null, " : "") + (GetTopRect == null? "GetTopRect is Null, " : "") + (ClipRect == null? "ClipRect is Null, " : ""));
-				compabilityMode = true;
-				initiated = true;
-				return;
-			}
+            PropertyInfo topmostRect = GUIClipType.GetProperty("topmostRect", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            MethodInfo GetTopmostRect = topmostRect != null ? (topmostRect.GetGetMethod(false) ?? topmostRect.GetGetMethod(true)) : null;
+            MethodInfo GetTopRect = GUIClipType.GetMethod("GetTopRect", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            MethodInfo ClipRect = GUIClipType.GetMethod("Clip", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, Type.DefaultBinder, new Type[] { typeof(Rect) }, new ParameterModifier[] { });
 
-			// Create simple acessor delegates
-			GetTopRectDelegate = (Func<Rect>)Delegate.CreateDelegate (typeof(Func<Rect>), GetTopRect);
-			topmostRectDelegate = (Func<Rect>)Delegate.CreateDelegate (typeof(Func<Rect>), topmostRect.GetGetMethod ());
+            if (GUIClipType == null || topmostRect == null || GetTopRect == null || ClipRect == null)
+            {
+                Debug.LogWarning("GUIScaleUtility cannot run on this system! Compability mode enabled. For you that means you're not able to use the Node Editor inside more than one group:( Please PM me (Seneral @UnityForums) so I can figure out what causes this! Thanks!");
+                Debug.LogWarning((GUIClipType == null ? "GUIClipType is Null, " : "") + (topmostRect == null ? "topmostRect is Null, " : "") + (GetTopRect == null ? "GetTopRect is Null, " : "") + (ClipRect == null ? "ClipRect is Null, " : ""));
+                compabilityMode = true;
+                initiated = true;
+                return;
+            }
 
-			if (GetTopRectDelegate == null || topmostRectDelegate == null)
-			{
-				Debug.LogWarning ("GUIScaleUtility cannot run on this system! Compability mode enabled. For you that means you're not able to use the Node Editor inside more than one group:( Please PM me (Seneral @UnityForums) so I can figure out what causes this! Thanks!");
-				Debug.LogWarning ((GUIClipType == null? "GUIClipType is Null, " : "") + (topmostRect == null? "topmostRect is Null, " : "") + (GetTopRect == null? "GetTopRect is Null, " : "") + (ClipRect == null? "ClipRect is Null, " : ""));
-				compabilityMode = true;
-				initiated = true;
-				return;
-			}
+            // Create simple acessor delegates
+            GetTopRectDelegate = (Func<Rect>)Delegate.CreateDelegate(typeof(Func<Rect>), GetTopRect);
+            topmostRectDelegate = (Func<Rect>)Delegate.CreateDelegate(typeof(Func<Rect>), GetTopmostRect);
 
-			// As we can call Begin/Ends inside another, we need to save their states hierarchial in Lists (not Stack, as we need to iterate over them!):
-			currentRectStack = new List<Rect> ();
-			rectStackGroups = new List<List<Rect>> ();
-			GUIMatrices = new List<Matrix4x4> ();
-			adjustedGUILayout = new List<bool> ();
+            if (GetTopRectDelegate == null || topmostRectDelegate == null)
+            {
+                Debug.LogWarning("GUIScaleUtility cannot run on this system! Compability mode enabled. For you that means you're not able to use the Node Editor inside more than one group:( Please PM me (Seneral @UnityForums) so I can figure out what causes this! Thanks!");
+                Debug.LogWarning((GUIClipType == null ? "GUIClipType is Null, " : "") + (topmostRect == null ? "topmostRect is Null, " : "") + (GetTopRect == null ? "GetTopRect is Null, " : "") + (ClipRect == null ? "ClipRect is Null, " : ""));
+                compabilityMode = true;
+                initiated = true;
+                return;
+            }
 
-			// Sometimes, strange errors pop up (related to Mac?), which we try to catch and enable a compability Mode no supporting zooming in groups
-			/*try
+            // Sometimes, strange errors pop up (related to Mac?), which we try to catch and enable a compability Mode no supporting zooming in groups
+            /*try
 			{
 				topmostRectDelegate.Invoke ();
 			}
@@ -90,15 +91,15 @@ namespace NodeEditorFramework.Utilities
 				Debug.Log (e.Message);
 				compabilityMode = true;
 			}*/
-		
-			initiated = true;
-		}
 
-		#endregion
+            initiated = true;
+        }
 
-		#region Scale Area
+        #endregion
 
-		public static Vector2 getCurrentScale { get { return new Vector2 (1/GUI.matrix.GetColumn (0).magnitude, 1/GUI.matrix.GetColumn (1).magnitude); } } 
+        #region Scale Area
+
+        public static Vector2 getCurrentScale { get { return new Vector2 (1/GUI.matrix.GetColumn (0).magnitude, 1/GUI.matrix.GetColumn (1).magnitude); } } 
 
 		/// <summary>
 		/// Begins a scaled local area. 

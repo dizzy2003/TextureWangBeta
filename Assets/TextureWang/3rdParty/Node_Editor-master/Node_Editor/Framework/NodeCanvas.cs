@@ -15,7 +15,10 @@ namespace NodeEditorFramework
 		public NodeEditorState[] editorStates = new NodeEditorState[0];
 
 		public bool livesInScene = false;
-
+	    public bool m_ExportToExternalPath;
+        public bool m_PreviewAnimation;
+        public string m_ExternalPath;
+	    public int m_FrameCount = 30;
         public int m_DefaultTextureWidth=1024;
         public int m_DefaultTextureHeight=1024;
         public ChannelType m_DefaultChannelType=ChannelType.Float;

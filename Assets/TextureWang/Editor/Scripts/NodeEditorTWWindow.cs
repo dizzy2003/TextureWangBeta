@@ -4,11 +4,13 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Assets.TextureWang.Scripts.Nodes;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 using UnityEditor.Graphs;
 using UnityEditor.TreeViewExamples;
+using Debug = UnityEngine.Debug;
 using Node = NodeEditorFramework.Node;
 
 
@@ -26,8 +28,8 @@ namespace TextureWang
         private static NodeEditorTWWindow _editor;
         private static NodeEditorTWWindow _editor2;
 
-        public int m_DefaultTextureWidth;
-        public int m_DefaultTextureHeight;
+//        public int m_DefaultTextureWidth;
+//        public int m_DefaultTextureHeight;
         
         public static NodeEditorTWWindow editor { get { AssureEditor (); return _editor; } }
 		public static void AssureEditor () { if (_editor == null) OpenNodeEditor(); }
@@ -417,6 +419,9 @@ namespace TextureWang
         }
 
         private static SubTreeNode m_PostOnLoadCanvasFixup;
+        private float m_AnimValue = 0;
+        private Stopwatch m_SW;
+        private float m_LastTime;
         private void OnGUI () 
 		{
             if (wwwShader1 != null)
@@ -432,6 +437,34 @@ namespace TextureWang
                     wwwShader1 = null;
                 }
                 Repaint();
+            }
+
+            if (canvasCache.nodeCanvas.m_PreviewAnimation)
+            {
+                if(m_SW==null)
+                    m_SW=Stopwatch.StartNew();
+                m_AnimValue += (m_SW.ElapsedMilliseconds- m_LastTime)/3000.0f;
+                if (m_AnimValue < 0)
+                    m_AnimValue = 0;
+                m_LastTime = m_SW.ElapsedMilliseconds;
+                if (m_AnimValue > 1.0f)
+                    m_AnimValue = 0.0f;
+                foreach (var x in canvasCache.nodeCanvas.nodes)
+                {
+                    if (x is InputNodeAnimated)
+                    {
+                        var ina = x as InputNodeAnimated;
+                        ina.m_Value.Set(m_AnimValue);
+                    }
+                }
+                NodeEditor.RecalculateAll(canvasCache.nodeCanvas);
+                Repaint();
+                
+            }
+            else
+            {
+
+                m_AnimValue = 0;
             }
 
 
@@ -493,6 +526,8 @@ namespace TextureWang
                         }
                     }
                 }
+
+                
                 if (wwwShader1 != null)
                     GUI.Label(new Rect(100, 100, 500, 200), "One Time Shader Download in progress...");
 
@@ -851,9 +886,49 @@ namespace TextureWang
                 GUI.changed = false;
                 UnityTextureOutput.ms_ExportPNG = false;
             }
+            canvasCache.nodeCanvas.m_PreviewAnimation = GUILayout.Toggle(canvasCache.nodeCanvas.m_PreviewAnimation, "Preview Animation");
+            canvasCache.nodeCanvas.m_ExportToExternalPath =GUILayout.Toggle(canvasCache.nodeCanvas.m_ExportToExternalPath, "Export To External Path");
+            if (GUILayout.Button(new GUIContent("Browse External path", "Sets External export path outside asset folder ")))
+                canvasCache.nodeCanvas.m_ExternalPath = EditorUtility.SaveFolderPanel("Set External Export Path", canvasCache.nodeCanvas.m_ExternalPath,"");
+            canvasCache.nodeCanvas.m_ExternalPath = GUILayout.TextField(canvasCache.nodeCanvas.m_ExternalPath);
+            UnityTextureOutput.ms_ExportExternal = canvasCache.nodeCanvas.m_ExportToExternalPath;
+            UnityTextureOutput.ms_ExportExternalPath = canvasCache.nodeCanvas.m_ExternalPath;
 
-//            if (GUILayout.Button ("Force Re-Init"))
-//				NodeEditor.ReInit (true);
+
+            if (GUILayout.Button(new GUIContent("Recalculate All Animated Export PNG'S", "Initiates complete recalculate. ")))
+            {
+                UnityTextureOutput.ms_ExportPNG = true;
+                int count = 0;
+                float step = 1.0f/canvasCache.nodeCanvas.m_FrameCount;
+                UnityTextureOutput.ms_ExportPNGFrameCount = canvasCache.nodeCanvas.m_FrameCount;
+                for (float f = 0; f <= 1.001f; f += step)
+                {
+                    
+                    UnityTextureOutput.ms_ExportPNGAnimated = true;
+                    UnityTextureOutput.ms_ExportPNGFrame = count++;
+                    foreach (var x in canvasCache.nodeCanvas.nodes)
+                    {
+                        if (x is InputNodeAnimated)
+                        {
+                            var ina = x as InputNodeAnimated;
+                            ina.m_Value.Set(f);
+                        }
+                        if (x is UnityTextureOutput || x is UnityTextureOutputMetalicAndRoughness ||
+                            x is UnityTextureOutputRGBA)
+                        {
+                            //x.m_DirtyID = -1;
+                        }
+                    }
+                    NodeEditor.RecalculateAll(canvasCache.nodeCanvas);
+                }
+                GUI.changed = false;
+                
+                UnityTextureOutput.ms_ExportPNG = false;
+                UnityTextureOutput.ms_ExportPNGAnimated = false;
+            }
+
+            //            if (GUILayout.Button ("Force Re-Init"))
+            //				NodeEditor.ReInit (true);
             if (GUILayout.Button(new GUIContent("Double All texture Sizes", "")))
             {
                 foreach (var n in canvasCache.nodeCanvas.nodes)
@@ -923,12 +998,12 @@ namespace TextureWang
             GUI.changed = changed;
             if (canvasCache.nodeCanvas != null)
             {
-                canvasCache.nodeCanvas.m_DefaultTextureWidth =
-                    EditorGUILayout.IntSlider(new GUIContent("Default tex Width", ""),
-                        canvasCache.nodeCanvas.m_DefaultTextureWidth, 1, 4096);
-                canvasCache.nodeCanvas.m_DefaultTextureHeight =
-                    EditorGUILayout.IntSlider(new GUIContent("Default tex Height", ""),
-                        canvasCache.nodeCanvas.m_DefaultTextureHeight, 1, 4096);
+                
+                canvasCache.nodeCanvas.m_FrameCount =
+                    EditorGUILayout.IntSlider(new GUIContent("Animation Frame Count", ""),
+                        canvasCache.nodeCanvas.m_FrameCount, 1, 1024);
+                canvasCache.nodeCanvas.m_DefaultTextureWidth =EditorGUILayout.IntSlider(new GUIContent("Default tex Width", ""),canvasCache.nodeCanvas.m_DefaultTextureWidth, 1, 4096);
+                canvasCache.nodeCanvas.m_DefaultTextureHeight =EditorGUILayout.IntSlider(new GUIContent("Default tex Height", ""),canvasCache.nodeCanvas.m_DefaultTextureHeight, 1, 4096);
 
                 canvasCache.nodeCanvas.m_DefaultChannelType = (ChannelType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("pixel Depth", ""), canvasCache.nodeCanvas.m_DefaultChannelType);
 
@@ -1011,7 +1086,7 @@ namespace TextureWang
         {
             if (canvasCache != null && !string.IsNullOrEmpty(canvasCache.openedCanvasPath))
             {
-                int indexOfAssetSubString = canvasCache.openedCanvasPath.LastIndexOf(@"/Assets");
+                int indexOfAssetSubString = canvasCache.openedCanvasPath.LastIndexOf(@"Assets");
                 if (indexOfAssetSubString >= 0)
                 {
                     lastpath = canvasCache.openedCanvasPath.Substring(indexOfAssetSubString);

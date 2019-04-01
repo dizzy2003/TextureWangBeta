@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using NodeEditorFramework;
+using NodeEditorFramework.Utilities;
 using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -18,6 +19,13 @@ namespace Assets.TextureWang.Scripts.Nodes
         public string m_TexName="";
 
         static public bool ms_ExportPNG = false;
+        static public bool ms_ExportPNGAnimated = false;
+        static public int ms_ExportPNGFrame = 0;
+        static public int ms_ExportPNGFrameCount = 0;
+
+        static public bool ms_ExportExternal;
+        static public string ms_ExportExternalPath;
+        public bool m_ExportAnimatedAsSingleSpriteSheet;
 
 
 
@@ -45,13 +53,14 @@ namespace Assets.TextureWang.Scripts.Nodes
         private string ms_PathName;
         public override void DrawNodePropertyEditor() 
         {
+            m_ExportAnimatedAsSingleSpriteSheet = RTEditorGUI.Toggle(m_ExportAnimatedAsSingleSpriteSheet, "Export as Sprite Sheet");
             if (GUILayout.Button("save png"))
             {
                 string name = Path.GetFileName(ms_PathName);
                 ms_PathName = EditorUtility.SaveFilePanel("SavePNG", Path.GetDirectoryName(ms_PathName), name, "png");
                 Debug.Log(" path "+ ms_PathName);
                 
-                SavePNG(m_Output, ms_PathName);
+                SavePNG(m_Output, ms_PathName,true);
             }
             //miked        m_TitleBoxColor = Color.green;
 #if UNITY_EDITOR
@@ -81,7 +90,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             base.NodeGUI();
         }
 
-        public void SavePNG(Texture2D tex,string path)
+        public static void SavePNG(Texture2D tex,string path,bool _import)
         {
             Debug.Log("save png width "+tex.width+" height "+tex.height);
             byte[] bytes = tex.EncodeToPNG();
@@ -90,10 +99,11 @@ namespace Assets.TextureWang.Scripts.Nodes
             {
                 File.WriteAllBytes(path, bytes);
             }
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            if(_import)
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
 
         }
-
+        Texture2D texSpriteSheet = null;
         public override bool Calculate()
         {
 
@@ -177,9 +187,53 @@ namespace Assets.TextureWang.Scripts.Nodes
 
                 if (ms_ExportPNG)
                 {
-                    SavePNG(m_Output, path);
-                    importer.compressionQuality = importer.compressionQuality + 1; //try and force the import
-                    importer.SaveAndReimport();
+                    if (m_ExportAnimatedAsSingleSpriteSheet)
+                    {
+
+                        if (input != null && ms_ExportPNGFrame == 0)
+                            texSpriteSheet = new Texture2D(input.m_Width*(ms_ExportPNGFrameCount+1), input.m_Height,
+                                TextureFormat.ARGB32, false);
+
+                        texSpriteSheet.SetPixels(ms_ExportPNGFrame* input.m_Width, 0, input.m_Width, input.m_Height,
+                            m_Output.GetPixels(0, 0, input.m_Width, input.m_Height));
+
+                        if (ms_ExportPNGFrame == ms_ExportPNGFrameCount)
+                        {
+                            path = path.Replace(".png", "Sheet.png");
+                            if (UnityTextureOutput.ms_ExportExternal)
+                            {
+                                Debug.Log("filename is " + Path.GetFileName(path));
+                                path = UnityTextureOutput.ms_ExportExternalPath + Path.DirectorySeparatorChar +
+                                       Path.GetFileName(path);
+                                Debug.Log("new path is " + path);
+                            }
+                            SavePNG(texSpriteSheet, path, !UnityTextureOutput.ms_ExportExternal);
+                            
+                        }
+
+                    }
+                    else
+                    {
+
+
+
+
+                        if (ms_ExportPNGAnimated)
+                            path = path.Replace(".png", "" + ms_ExportPNGFrame + ".png");
+                        if (UnityTextureOutput.ms_ExportExternal)
+                        {
+                            Debug.Log("filename is " + Path.GetFileName(path));
+                            path = UnityTextureOutput.ms_ExportExternalPath + Path.DirectorySeparatorChar +
+                                   Path.GetFileName(path);
+                            Debug.Log("new path is " + path);
+                        }
+                        SavePNG(m_Output, path, !UnityTextureOutput.ms_ExportExternal);
+                        if (!ms_ExportExternal)
+                        {
+                            importer.compressionQuality = importer.compressionQuality + 1; //try and force the import
+                            importer.SaveAndReimport();
+                        }
+                    }
                 }
 
 

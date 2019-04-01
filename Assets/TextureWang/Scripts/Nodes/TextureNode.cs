@@ -39,6 +39,7 @@ namespace Assets.TextureWang.Scripts.Nodes
         public FloatRemap m_OutputGamma = new FloatRemap(1.0f, 0, 10.0f);
         public FloatRemap m_OutputMax = new FloatRemap(1.0f, 0, 1);
         public FloatRemap m_ScalePreview = new FloatRemap(1.0f);
+        public FloatRemap m_StepOutput = new FloatRemap(0.0f, 0.0f, 1.0f);
         private bool m_ShowLevels;
         private bool m_ShowNames;
 
@@ -291,7 +292,7 @@ namespace Assets.TextureWang.Scripts.Nodes
             _mat.SetInt("_Saturate", m_Saturate ? 1 : 0);
             _mat.SetInt("_Abs", m_Abs ? 1 : 0);
             _mat.SetVector("_ScaleOutput", new Vector4(m_InputMin, m_InputMax, m_OutputMin, m_OutputMax));
-            _mat.SetVector("_ScaleOutput2", new Vector4(m_OutputGamma, 0,0,0));
+            _mat.SetVector("_ScaleOutput2", new Vector4(m_OutputGamma, m_StepOutput,0,0));
             _mat.SetInt("_TextureOutIsGrey", m_TexMode==TexMode.Greyscale ? 1 : 0);
 //z is used for random things, fix that        _mat.SetVector("_TexSizeRecip", new Vector4(1.0f / (float)m_TexWidth, 1.0f / (float)m_TexWidth, 0, 0));
         }
@@ -390,8 +391,8 @@ namespace Assets.TextureWang.Scripts.Nodes
             m_ClampInputUV = GUILayout.Toggle(m_ClampInputUV, "Clamp Input UV");
             m_InvertInput = GUILayout.Toggle(m_InvertInput, "Invert Input");
             m_InvertOutput = GUILayout.Toggle(m_InvertOutput, "Invert Output");
+            m_StepOutput.SliderLabel(this, "Threshold output to mask");
 
-        
             m_ShowLevels = EditorGUILayout.Foldout(m_ShowLevels, "Levels:");
             if (m_ShowLevels)
             {

@@ -98,7 +98,10 @@ namespace Assets.TextureWang.Scripts.Nodes
         Square      = 10,
         Hexagon     = 11,
         WangNoise   = 12,
-        Distance    = 13
+        Distance    = 13,
+        Segment     = 14,
+        Simplex3D   = 15,
+
 
 
     }

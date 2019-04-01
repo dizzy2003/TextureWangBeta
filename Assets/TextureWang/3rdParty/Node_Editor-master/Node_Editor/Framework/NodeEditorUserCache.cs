@@ -59,14 +59,26 @@ namespace NodeEditorFramework
 				return;
 
 			AddCacheEvents();
-            if(_loadCache)
-		        LoadCache ();
-            else
-                NewNodeCanvas();
+		    if (_loadCache)
+		    {
+		        try
+		        {
+                    LoadCache();
+                }
+		        catch (Exception _ex)
+		        {
+                    Debug.LogError(" caught execption loading cache "+_ex);
+                    NewNodeCanvas();
+                    
+		        }
+		        
+		    }
+		    else
+		        NewNodeCanvas();
 
 
 
-        }
+		}
 
         public void AddCacheEvents()
 	    {
@@ -193,8 +205,8 @@ namespace NodeEditorFramework
 
 		private void CheckCurrentCache () 
 		{
-			if (!nodeCanvas.livesInScene && UnityEditor.AssetDatabase.GetAssetPath (nodeCanvas) != lastSessionPath)
-				throw new UnityException ("Cache system error: Current Canvas is not saved as the temporary cache!");
+//			if (!nodeCanvas.livesInScene && UnityEditor.AssetDatabase.GetAssetPath (nodeCanvas) != lastSessionPath)
+	//			throw new UnityException ("Cache system error: Current Canvas is not saved as the temporary cache! " +UnityEditor.AssetDatabase.GetAssetPath(nodeCanvas) +" != "+ lastSessionPath);
 		}
 
 		private void DeleteCache () 
@@ -266,7 +278,8 @@ namespace NodeEditorFramework
 		/// </summary>
 		public void SaveNodeCanvas (string path) 
 		{
-			nodeCanvas.editorStates = new NodeEditorState[] { editorState };
+            openedCanvasPath = path;
+            nodeCanvas.editorStates = new NodeEditorState[] { editorState };
 			NodeEditorSaveManager.SaveNodeCanvas (path, nodeCanvas, true);
 			NodeEditor.RepaintClients ();
 		}
