@@ -467,7 +467,6 @@ namespace TextureWang
                 m_AnimValue = 0;
             }
 
-
             if (m_ReplaceNode != null && !OverlayGUI.HasPopupControl() && ms_InputInfo!=null)
             {
                 NodeEditorInputSystem.ShowContextMenu(ms_InputInfo);
@@ -509,7 +508,26 @@ namespace TextureWang
             // Perform drawing with error-handling
             try
             {
+                if ((Event.current.keyCode >= KeyCode.A && Event.current.keyCode <= KeyCode.Z)||Event.current.keyCode == KeyCode.Escape)
+                {
+                    if (Event.current.keyCode == KeyCode.Escape)
+                        PopupMenu.m_NameFilter = "";
+                    else
+                    {
+                        int ascii = ((int) Event.current.keyCode - (int) KeyCode.A) + 65;
+                        string c = Char.ConvertFromUtf32(ascii);
+                        PopupMenu.m_NameFilter = c;
+                    }
 
+                    Debug.Log("m_NameFilter "+ PopupMenu.m_NameFilter);
+                    OverlayGUI.currentPopup = null;
+                    NodeEditorInputInfo inputInfo = new NodeEditorInputInfo(canvasCache.editorState);
+
+                    NodeEditorInputSystem.ShowContextMenu(inputInfo);
+
+
+
+                }
                 NodeEditor.DrawCanvas(canvasCache.nodeCanvas, canvasCache.editorState);
 
 

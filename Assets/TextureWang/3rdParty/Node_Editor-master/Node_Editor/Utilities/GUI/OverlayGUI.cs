@@ -58,6 +58,8 @@ namespace NodeEditorFramework.Utilities
 		public static GUIStyle selectedLabel;
 
 		public float minWidth;
+
+	    public static string m_NameFilter="P";
 		
 		public PopupMenu () 
 		{
@@ -78,6 +80,7 @@ namespace NodeEditorFramework.Utilities
 
 		public void Show (Vector2 pos, float MinWidth = 40)
 		{
+		    Debug.Log("show popup ");
 			minWidth = MinWidth;
 			position = calculateRect (pos, menuItems, minWidth);
 			selectedPath = "";
@@ -90,15 +93,29 @@ namespace NodeEditorFramework.Utilities
 		
 		public void AddItem (GUIContent content, bool on, MenuFunctionData func, object userData)
 		{
-			string path;
-			MenuItem parent = AddHierarchy (ref content, out path);
-			if (parent != null)
-				parent.subItems.Add (new MenuItem (path, content, func, userData));
-			else
-				menuItems.Add (new MenuItem (path, content, func, userData));
-		}
-		
-		public void AddItem (GUIContent content, bool on, MenuFunction func)
+            //Debug.Log("AddItem popup "+ content.text);
+            string path;
+
+            if (m_NameFilter.Length > 0)
+            {
+                if (content.text.Contains("/" + m_NameFilter))
+                {
+                    menuItems.Add(new MenuItem(content.text, content, func, userData));
+                    Debug.Log(" AddItem content " + content.text);//+ " path " + path);
+                }
+            }
+            else
+		    {
+                MenuItem parent = AddHierarchy (ref content, out path);
+		        if (parent != null)
+		            parent.subItems.Add(new MenuItem(path, content, func, userData));
+		        else
+		            menuItems.Add(new MenuItem(path, content, func, userData));
+		    }
+
+        }
+
+        public void AddItem (GUIContent content, bool on, MenuFunction func)
 		{
 			string path;
 			MenuItem parent = AddHierarchy (ref content, out path);
@@ -175,7 +192,8 @@ namespace NodeEditorFramework.Utilities
 			if (!inRect || close) 
 			{
 				OverlayGUI.currentPopup = null;
-			}
+                PopupMenu.m_NameFilter = "";
+            }
 
 			NodeEditorFramework.NodeEditor.RepaintClients ();
 		}
