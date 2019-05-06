@@ -47,12 +47,14 @@ namespace NodeEditorFramework.Utilities
 #else
 			string currentScene = Application.loadedLevelName;
 #endif
+/*
 			if (loadedScene != currentScene)
 			{
 				if (justOpenedNewScene != null)
 					justOpenedNewScene.Invoke ();
 				loadedScene = currentScene;
 			}
+*/
 		}
 
 		// Handles just after switch (non-serialized values lost)
