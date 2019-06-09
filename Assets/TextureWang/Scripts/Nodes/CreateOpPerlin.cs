@@ -111,6 +111,7 @@ namespace Assets.TextureWang.Scripts.Nodes
 
         public override bool Calculate()
         {
+            Debug.Log("calc");
             if (!allInputsReady())
             {
                 //Debug.LogError(" input no ready");

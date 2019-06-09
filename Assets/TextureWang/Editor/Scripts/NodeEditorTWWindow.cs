@@ -437,6 +437,7 @@ namespace TextureWang
                     wwwShader1 = null;
                 }
                 Repaint();
+                Debug.Log("repaint 2");
             }
 
             if (canvasCache.nodeCanvas.m_PreviewAnimation)
@@ -459,7 +460,8 @@ namespace TextureWang
                 }
                 NodeEditor.RecalculateAll(canvasCache.nodeCanvas);
                 Repaint();
-                
+                Debug.Log("repaint 3");
+
             }
             else
             {
@@ -539,6 +541,7 @@ namespace TextureWang
                         if (tn.m_RequestRepaint)
                         {
                             tn.m_RequestRepaint = false;
+                            Debug.Log("repaint 1");
                             Repaint();
                             m_InspectorWindow.Repaint();
                         }
@@ -770,13 +773,15 @@ namespace TextureWang
 
         private void DrawSceneGUI()
         {
+//            Debug.Log("DrawSceneGui");
             if (canvasCache != null)
             {
                 AssureEditor();
                 canvasCache.AssureCanvas();
                 if (canvasCache.editorState.selectedNode != null)
                     canvasCache.editorState.selectedNode.OnSceneGUI();
-                SceneView.lastActiveSceneView.Repaint();
+                    SceneView.lastActiveSceneView.Repaint();
+//                Debug.Log("repaint 4");
             }
         }
         public static T[] GetAtPath<T>(string path)
@@ -1078,6 +1083,7 @@ namespace TextureWang
                 if(changeView)
                 {
                     Repaint();
+                    Debug.Log("repaint 5");
                 }
 
             }

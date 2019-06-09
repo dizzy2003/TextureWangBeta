@@ -83,6 +83,8 @@ namespace Assets.TextureWang.Scripts.Nodes
         Quadify=58,
         MapSphere=59,
         Symetry=60,
+        Skew=61,
+        Squish=62,
 
 
         SetCol = 0,
